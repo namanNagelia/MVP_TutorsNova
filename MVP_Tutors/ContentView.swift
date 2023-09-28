@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedTab = 1
     var body: some View {
-        //Top Navigator
+        //Top Navigator test
                 HStack{
                     Button(action: {}){
                         Image(systemName: "gear").resizable().frame(width: 30.0, height: 30.0).foregroundColor(.black)
