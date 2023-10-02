@@ -72,7 +72,7 @@ struct CoursePanel: View {
                     
                     Image(systemName: isExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
                         .font(.system(size: 20)) // Reduce the size of the arrow
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                 }
                 .padding(10) // Add padding around the button
             }
@@ -86,11 +86,10 @@ struct CoursePanel: View {
                         Spacer()
                         Button(action: {}) {
                             Image(systemName: "person.circle.fill").foregroundColor(.gray)
-                            
-                            Button(action: {}){
-                                Image(systemName: "message.fill").foregroundColor(.gray)
-                            }
                     }
+                        Button(action: {}){
+                            Image(systemName: "message.fill").foregroundColor(.gray)
+                        }
                     
                     }
                 }

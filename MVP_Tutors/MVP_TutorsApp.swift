@@ -9,13 +9,15 @@ import SwiftUI
 
 @main
 struct MVP_TutorsApp: App {
-    init(){
-        UserDefaults.standard.set(false, forKey: "darkModeEnabled")
-
-    }
     var body: some Scene {
         WindowGroup {
-            ContentView().accentColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+            ContentView()
+                .preferredColorScheme(.dark) // Set the preferred color scheme to Dark Mode
         }
     }
 }
+
+
+
+
+
