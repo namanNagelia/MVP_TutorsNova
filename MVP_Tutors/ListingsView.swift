@@ -72,21 +72,32 @@ struct CoursePanel: View {
                     
                     Image(systemName: isExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
                         .font(.system(size: 20)) // Reduce the size of the arrow
-                        .foregroundColor(.blue)
+                        .foregroundColor(.black)
                 }
                 .padding(10) // Add padding around the button
             }
             
             if isExpanded {
                 ForEach(course.tutors, id: \.self) { tutor in
-                    Text("Tutor: \(tutor)")
-                        .padding(.leading, 20) // Adjust the leading padding for tutors
+                    HStack {
+                        Text("Tutor: \(tutor)")
+                            .padding(.leading, 10.0)
+                        //Add action later
+                        Spacer()
+                        Button(action: {}) {
+                            Image(systemName: "person.circle.fill").foregroundColor(.gray)
+                            
+                            Button(action: {}){
+                                Image(systemName: "message.fill").foregroundColor(.gray)
+                            }
+                    }
+                    
+                    }
                 }
             }
-        }
-        .background(Color(.systemGray6))
+        }.background(Color(.systemGray6))
         .cornerRadius(15) // Increase the corner radius for a more rounded look
-        .padding(10) // Add padding around the entire panel
+        .padding(10)
     }
 }
 
