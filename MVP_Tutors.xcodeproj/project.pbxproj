@@ -35,6 +35,7 @@
 		FBE880A82ACC87FF00DD801E /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FBE880A72ACC87FF00DD801E /* FirebaseRemoteConfigSwift */; };
 		FBE880AA2ACC87FF00DD801E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = FBE880A92ACC87FF00DD801E /* FirebaseStorage */; };
 		FBE880AC2ACC87FF00DD801E /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = FBE880AB2ACC87FF00DD801E /* FirebaseStorageCombine-Community */; };
+		FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE880AF2ACC9F8C00DD801E /* AuthView.swift */; };
 		FBFDFE272AC3913100CD57C4 /* MVP_TutorsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */; };
 		FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE282AC3913100CD57C4 /* ContentView.swift */; };
 		FBFDFE2B2AC3913300CD57C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		FBE880742ACC876100DD801E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		FBE880AF2ACC9F8C00DD801E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		FBFDFE232AC3913100CD57C4 /* MVP_Tutors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVP_Tutors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVP_TutorsApp.swift; sourceTree = "<group>"; };
 		FBFDFE282AC3913100CD57C4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FBE880AE2ACC9F6000DD801E /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				FBFDFE342AC3926500CD57C4 /* TutorNowView.swift */,
+				FBFDFE362AC3927800CD57C4 /* ListingsView.swift */,
+				FBFDFE382AC3928800CD57C4 /* ChatsView.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
 		FBFDFE1A2AC3913100CD57C4 = {
 			isa = PBXGroup;
 			children = (
@@ -114,10 +126,9 @@
 			isa = PBXGroup;
 			children = (
 				FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */,
+				FBE880AF2ACC9F8C00DD801E /* AuthView.swift */,
 				FBFDFE282AC3913100CD57C4 /* ContentView.swift */,
-				FBFDFE342AC3926500CD57C4 /* TutorNowView.swift */,
-				FBFDFE362AC3927800CD57C4 /* ListingsView.swift */,
-				FBFDFE382AC3928800CD57C4 /* ChatsView.swift */,
+				FBE880AE2ACC9F6000DD801E /* Pages */,
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
 				FBE880742ACC876100DD801E /* GoogleService-Info.plist */,
 				FBFDFE2C2AC3913300CD57C4 /* Preview Content */,
@@ -238,6 +249,7 @@
 			files = (
 				FBFDFE352AC3926500CD57C4 /* TutorNowView.swift in Sources */,
 				FBFDFE372AC3927800CD57C4 /* ListingsView.swift in Sources */,
+				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
 				FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */,
 				FBFDFE272AC3913100CD57C4 /* MVP_TutorsApp.swift in Sources */,

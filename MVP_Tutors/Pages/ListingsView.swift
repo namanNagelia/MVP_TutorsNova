@@ -67,39 +67,38 @@ struct CoursePanel: View {
                         .font(.title)
                         .foregroundColor(.primary)
                         .padding(.trailing, 10) // Add padding to the right of the course name
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: isExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
                         .font(.system(size: 20)) // Reduce the size of the arrow
                         .foregroundColor(.white)
                 }
                 .padding(10) // Add padding around the button
             }
-            
+
             if isExpanded {
                 ForEach(course.tutors, id: \.self) { tutor in
                     HStack {
                         Text("Tutor: \(tutor)")
                             .padding(.leading, 10.0)
-                        //Add action later
+                        // Add action later
                         Spacer()
                         Button(action: {}) {
                             Image(systemName: "person.circle.fill").foregroundColor(.gray)
-                    }
-                        Button(action: {}){
+                        }
+                        Button(action: {}) {
                             Image(systemName: "message.fill").foregroundColor(.gray)
                         }
-                    
                     }
                 }
             }
         }.background(Color(.systemGray6))
-        .cornerRadius(15) // Increase the corner radius for a more rounded look
-        .padding(10)
+            .cornerRadius(15) // Increase the corner radius for a more rounded look
+            .padding(10)
     }
 }
 
-#Preview{
+#Preview {
     ContentView()
 }
