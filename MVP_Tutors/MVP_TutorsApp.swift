@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseCore
-@main
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -17,15 +16,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     return true
   }
 }
+
+
+@main
 struct MVP_TutorsApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @State private var isAuthenticated = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .preferredColorScheme(.dark) // Set the preferred color scheme to Dark Mode
+           ContentView()
         }
     }
 }
+
+
 
 
 

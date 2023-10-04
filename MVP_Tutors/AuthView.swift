@@ -1,11 +1,11 @@
 import SwiftUI
+import Firebase
 
 struct AuthView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
     @State private var password = ""
-    @State private var school = "University of Maryland"
     @State private var isRegistering = false
     @State private var showAlert = false
 
@@ -16,39 +16,29 @@ struct AuthView: View {
                     .font(.largeTitle)
                     .padding(.bottom, 20)
 
-                // First Name input field
-                TextField("First Name", text: $firstName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                if isRegistering {
+                    // First Name input field (shown only when registering)
+                    TextField("First Name", text: $firstName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
 
-                // Last Name input field
-                TextField("Last Name", text: $lastName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    // Last Name input field (shown only when registering)
+                    TextField("Last Name", text: $lastName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
 
-                // Email input field
+                // Email input field (shown when logging in or registering)
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
-                // Password input field
+                // Password input field (shown when logging in or registering)
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
-                // School dropdown
-                VStack {
-                    Picker("School", selection: $school) {
-                        Text("University of Maryland").tag("University of Maryland")
-                    }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding()
-                }
-                .background(Color(.black))
-                .cornerRadius(10)
-                .padding()
-                .pickerStyle(MenuPickerStyle())
-                .padding(.leading, -22.0)
+              
 
                 Button(action: isRegistering ? register : login) {
                     Text(isRegistering ? "Register" : "Login")
@@ -84,14 +74,28 @@ struct AuthView: View {
     }
 
     func login() {
-        // Implement login logic using Firebase here
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Login error: \(error.localizedDescription)")
+            } else {
+                print("Login successful")
+                // navigate to another view or perform other actions upon successful login
+            }
+        }
     }
 
     func register() {
-        // Implement registration logic using Firebase here
-        // After successful registration, set showAlert = true
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    print("Registration error: \(error.localizedDescription)")
+                } else {
+                    print("Registration successful")
+                    showAlert = true
+                }
+            }
+        }
     }
-}
+
 
 struct AuthView_Previews: PreviewProvider {
     static var previews: some View {
