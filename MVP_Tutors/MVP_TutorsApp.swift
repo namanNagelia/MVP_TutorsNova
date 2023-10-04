@@ -21,16 +21,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MVP_TutorsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State private var isAuthenticated = false
+    @AppStorage("isAuthenticated") private var isAuthenticated = false // Store authentication state
 
     var body: some Scene {
         WindowGroup {
-           ContentView()
+            if isAuthenticated {
+                ContentView()
+            } else {
+                AuthView(isAuthenticated: $isAuthenticated)
+            }
+        }
+    }
+
+    init() {
+        // Initialize isAuthenticated to false if it's not set
+        if UserDefaults.standard.value(forKey: "isAuthenticated") == nil {
+            isAuthenticated = false
         }
     }
 }
-
-
 
 
 

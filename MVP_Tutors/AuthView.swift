@@ -8,6 +8,14 @@ struct AuthView: View {
     @State private var password = ""
     @State private var isRegistering = false
     @State private var showAlert = false
+    @Binding var isAuthenticated: Bool // Add binding for authentication state
+    
+    @State private var loginError = ""
+    @State private var isLoginErrorAlertPresented = false
+
+    init(isAuthenticated: Binding<Bool>) {
+        self._isAuthenticated = isAuthenticated
+    }
 
     var body: some View {
         NavigationView {
@@ -38,8 +46,6 @@ struct AuthView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
-              
-
                 Button(action: isRegistering ? register : login) {
                     Text(isRegistering ? "Register" : "Login")
                         .foregroundColor(.white)
@@ -66,6 +72,13 @@ struct AuthView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+            .alert(isPresented: $isLoginErrorAlertPresented) {
+                Alert(
+                    title: Text("Login Error"),
+                    message: Text(loginError),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
 
@@ -77,28 +90,40 @@ struct AuthView: View {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
                 print("Login error: \(error.localizedDescription)")
+                loginError = "Login failed. Please check your email and password."
+                isLoginErrorAlertPresented = true
             } else {
                 print("Login successful")
-                // navigate to another view or perform other actions upon successful login
+                isAuthenticated = true
             }
         }
     }
 
     func register() {
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                if let error = error {
-                    print("Registration error: \(error.localizedDescription)")
-                } else {
-                    print("Registration successful")
-                    showAlert = true
-                }
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Registration error: \(error.localizedDescription)")
+            } else {
+                print("Registration successful")
+                showAlert = true
+                // Clear input fields
+                firstName = ""
+                lastName = ""
+                email = ""
+                password = ""
             }
         }
     }
+}
+
+//To Do: Password Reset, Check if account already exists
 
 
 struct AuthView_Previews: PreviewProvider {
+    @State static var isAuthenticated = true
+
     static var previews: some View {
-        AuthView()
+        AuthView(isAuthenticated: $isAuthenticated)
     }
 }
+
