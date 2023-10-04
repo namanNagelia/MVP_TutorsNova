@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDQYTt4chHPgA_hYVdWQO4woTugDac4Fy4</string>
+	<string>AIzaSyArA5nIxoCseE5msp0NgXBBNIgHDrbBRV8</string>
 	<key>GCM_SENDER_ID</key>
-	<string>685697121809</string>
+	<string>687809041377</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.n3Productions.MVP-Tutors</string>
 	<key>PROJECT_ID</key>
-	<string>mvp-tutornova</string>
+	<string>mvp-tutor-nova</string>
 	<key>STORAGE_BUCKET</key>
-	<string>mvp-tutornova.appspot.com</string>
+	<string>mvp-tutor-nova.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:685697121809:ios:0f46791d3d650a7f097bb0</string>
+	<string>1:687809041377:ios:209f16aa9a65c27a8838a0</string>
 </dict>
 </plist>
