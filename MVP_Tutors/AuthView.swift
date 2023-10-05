@@ -116,7 +116,7 @@ struct AuthView: View {
     }
 }
 
-//To Do: Password Reset, Check if account already exists
+//To Do: Password Reset, Check if account already exists, after register, renavigate 
 
 
 struct AuthView_Previews: PreviewProvider {
