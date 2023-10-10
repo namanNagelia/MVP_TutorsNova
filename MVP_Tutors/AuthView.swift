@@ -1,6 +1,7 @@
-import SwiftUI
 import Firebase
-
+import SwiftUI
+import FirebaseAuth
+//To Do: Popups for error handling, and send emails 
 struct AuthView: View {
     @State private var firstName = ""
     @State private var lastName = ""
@@ -8,10 +9,16 @@ struct AuthView: View {
     @State private var password = ""
     @State private var isRegistering = false
     @State private var showAlert = false
-    @Binding var isAuthenticated: Bool // Add binding for authentication state
-    
+    @Binding var isAuthenticated: Bool
     @State private var loginError = ""
     @State private var isLoginErrorAlertPresented = false
+    @State private var isRegisterAlertPresented = false
+    @State private var RegisterError = ""
+    // Reset password stuff
+    @State private var resetEmail = ""
+    @State private var isPasswordResetAlertPresented = false
+    @State private var passwordResetError = ""
+    @State private var isResetPasswordViewPresented = false // Control reset password view
 
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
@@ -25,23 +32,17 @@ struct AuthView: View {
                     .padding(.bottom, 20)
 
                 if isRegistering {
-                    // First Name input field (shown only when registering)
                     TextField("First Name", text: $firstName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
-
-                    // Last Name input field (shown only when registering)
                     TextField("Last Name", text: $lastName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                 }
-
-                // Email input field (shown when logging in or registering)
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
-                // Password input field (shown when logging in or registering)
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
@@ -55,6 +56,18 @@ struct AuthView: View {
                         .cornerRadius(10)
                 }
 
+                if !isRegistering {
+                    // Password reset button and field (shown when logging in)
+                    Button(action: {
+                        // Show the reset password view
+                        isResetPasswordViewPresented = true
+                    }) {
+                        Text("Forgot Password?")
+                            .foregroundColor(.blue)
+                            .padding()
+                    }
+                }
+
                 Button(action: toggleRegister) {
                     Text(isRegistering ? "Already have an account? Log in" : "Don't have an account? Create one")
                         .foregroundColor(.blue)
@@ -65,10 +78,10 @@ struct AuthView: View {
             }
             .padding()
             .navigationBarHidden(true)
-            .alert(isPresented: $showAlert) {
+            .alert(isPresented: $isRegisterAlertPresented) {
                 Alert(
-                    title: Text("Registration Successful"),
-                    message: Text("A confirmation email has been sent to your email address. Please verify your email to proceed."),
+                    title: Text("Registration Unsuccessful"),
+                    message: Text(RegisterError),
                     dismissButton: .default(Text("OK"))
                 )
             }
@@ -79,6 +92,10 @@ struct AuthView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+            // Present the reset password view as a popup
+            .sheet(isPresented: $isResetPasswordViewPresented) {
+                ResetPassword(isResetPasswordViewPresented: $isResetPasswordViewPresented)
+            }
         }
     }
 
@@ -87,7 +104,7 @@ struct AuthView: View {
     }
 
     func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+        Auth.auth().signIn(withEmail: email, password: password) { _, error in
             if let error = error {
                 print("Login error: \(error.localizedDescription)")
                 loginError = "Login failed. Please check your email and password."
@@ -100,24 +117,36 @@ struct AuthView: View {
     }
 
     func register() {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                print("Registration error: \(error.localizedDescription)")
+        Auth.auth().createUser(withEmail: email, password: password) { _, error in
+            if let error = error as? NSError {
+                if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
+                    DispatchQueue.main.async {
+                        isRegisterAlertPresented = true
+                        RegisterError = "Registration Failed. Email is already in use."
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        isRegisterAlertPresented = true
+                        RegisterError = "Registration Failed. \(error.localizedDescription)"
+                    }
+                    print("Registration error: \(error.localizedDescription)")
+                }
             } else {
-                print("Registration successful")
-                showAlert = true
-                // Clear input fields
-                firstName = ""
-                lastName = ""
-                email = ""
-                password = ""
+                DispatchQueue.main.async {
+                    print("Registration successful")
+                    showAlert = true
+                    login()
+                    // Clear input fields
+                    firstName = ""
+                    lastName = ""
+                    email = ""
+                    password = ""
+                }
             }
         }
     }
+
 }
-
-//To Do: Password Reset, Check if account already exists, after register, renavigate 
-
 
 struct AuthView_Previews: PreviewProvider {
     @State static var isAuthenticated = true
@@ -126,4 +155,3 @@ struct AuthView_Previews: PreviewProvider {
         AuthView(isAuthenticated: $isAuthenticated)
     }
 }
-
