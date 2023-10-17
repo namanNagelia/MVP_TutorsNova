@@ -3,6 +3,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var selectedTab = 1
     @Environment(\.colorScheme) var colorScheme
+    @State private var isProfileView = false
+    @State private var isAuthenticated = false
+
 
     var body: some View {
         //Top Navigator test
@@ -22,7 +25,7 @@ struct ContentView: View {
                             .foregroundColor(colorScheme == .dark ? .white : .black)
                     }
                     
-                    Button(action: {}) {
+                    Button(action: {isProfileView = true}) {
                         Image(systemName: "person.circle.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
@@ -32,6 +35,11 @@ struct ContentView: View {
                 }
                 .padding(.leading, 15.0)
                 .frame(height: 30.0)
+        
+                .sheet(isPresented: $isProfileView) {
+                    ProfileView(isAuthenticated: $isAuthenticated) //add binding after
+                }
+
         Spacer()
 
         

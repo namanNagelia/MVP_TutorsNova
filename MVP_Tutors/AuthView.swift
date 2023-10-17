@@ -18,7 +18,7 @@ struct AuthView: View {
     @State private var resetEmail = ""
     @State private var isPasswordResetAlertPresented = false
     @State private var passwordResetError = ""
-    @State private var isResetPasswordViewPresented = false // Control reset password view
+    @State private var isResetPasswordViewPresented = false 
 
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
@@ -57,9 +57,7 @@ struct AuthView: View {
                 }
 
                 if !isRegistering {
-                    // Password reset button and field (shown when logging in)
                     Button(action: {
-                        // Show the reset password view
                         isResetPasswordViewPresented = true
                     }) {
                         Text("Forgot Password?")
@@ -92,7 +90,6 @@ struct AuthView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-            // Present the reset password view as a popup
             .sheet(isPresented: $isResetPasswordViewPresented) {
                 ResetPassword(isResetPasswordViewPresented: $isResetPasswordViewPresented)
             }
@@ -116,8 +113,8 @@ struct AuthView: View {
         }
     }
 
-    func register() {
-        Auth.auth().createUser(withEmail: email, password: password) { _, error in
+ func register() {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error as? NSError {
                 if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
                     DispatchQueue.main.async {
@@ -131,20 +128,30 @@ struct AuthView: View {
                     }
                     print("Registration error: \(error.localizedDescription)")
                 }
-            } else {
-                DispatchQueue.main.async {
-                    print("Registration successful")
-                    showAlert = true
-                    login()
-                    // Clear input fields
-                    firstName = ""
-                    lastName = ""
-                    email = ""
-                    password = ""
+            } else if let user = authResult?.user {
+                // Set the user's display name
+                let changeRequest = user.createProfileChangeRequest()
+                changeRequest.displayName = "\(firstName) \(lastName)"
+                changeRequest.commitChanges { error in
+                    if let error = error {
+                        print("Error setting display name: \(error.localizedDescription)")
+                    } else {
+                        DispatchQueue.main.async {
+                            print("Registration successful")
+                            showAlert = true
+                            login()
+                            // Clear input fields
+                            firstName = ""
+                            lastName = ""
+                            email = ""
+                            password = ""
+                        }
+                    }
                 }
             }
         }
     }
+
 
 }
 
