@@ -39,6 +39,8 @@ struct ProfileView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(10)
+            } else{
+                Text(String("Is Autheticated: " + String(isAuthenticated)))
             }
         }
         .onAppear {
