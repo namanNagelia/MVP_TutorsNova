@@ -110,6 +110,16 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		FBF97B162AE5D1AF00BCA3D2 /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
+				FBE880AF2ACC9F8C00DD801E /* AuthView.swift */,
+				FB6A04732AD583F900380C0B /* ResetPassword.swift */,
+			);
+			path = LogIn;
+			sourceTree = "<group>";
+		};
 		FBFDFE1A2AC3913100CD57C4 = {
 			isa = PBXGroup;
 			children = (
@@ -129,10 +139,8 @@
 		FBFDFE252AC3913100CD57C4 /* MVP_Tutors */ = {
 			isa = PBXGroup;
 			children = (
+				FBF97B162AE5D1AF00BCA3D2 /* LogIn */,
 				FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */,
-				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
-				FBE880AF2ACC9F8C00DD801E /* AuthView.swift */,
-				FB6A04732AD583F900380C0B /* ResetPassword.swift */,
 				FBFDFE282AC3913100CD57C4 /* ContentView.swift */,
 				FBE880AE2ACC9F6000DD801E /* Pages */,
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
