@@ -14,9 +14,9 @@
             filePath = "MVP_Tutors/LogIn/AuthView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "register()"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "login()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

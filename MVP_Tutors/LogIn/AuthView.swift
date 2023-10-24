@@ -1,7 +1,8 @@
 import Firebase
-import SwiftUI
 import FirebaseAuth
-//To Do: Popups for error handling, and send emails 
+import SwiftUI
+// To Do: Popups for error handling, and send emails
+// Pop up if account already exists
 struct AuthView: View {
     @State private var firstName = ""
     @State private var lastName = ""
@@ -18,7 +19,7 @@ struct AuthView: View {
     @State private var resetEmail = ""
     @State private var isPasswordResetAlertPresented = false
     @State private var passwordResetError = ""
-    @State private var isResetPasswordViewPresented = false 
+    @State private var isResetPasswordViewPresented = false
 
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
@@ -39,13 +40,20 @@ struct AuthView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                 }
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                Group{
+                    
+                    TextField("Email", text: $email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .padding()
 
-                SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
+                .padding(8)
+
 
                 Button(action: isRegistering ? register : login) {
                     Text(isRegistering ? "Register" : "Login")
@@ -113,7 +121,7 @@ struct AuthView: View {
         }
     }
 
- func register() {
+    func register() {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let error = error as? NSError {
                 if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
@@ -151,8 +159,6 @@ struct AuthView: View {
             }
         }
     }
-
-
 }
 
 struct AuthView_Previews: PreviewProvider {
