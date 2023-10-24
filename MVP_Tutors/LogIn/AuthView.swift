@@ -101,13 +101,13 @@ struct AuthView: View {
     }
 
     func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { _, error in
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Login error: \(error.localizedDescription)")
                 loginError = "Login failed. Please check your email and password."
                 isLoginErrorAlertPresented = true
             } else {
-                print("Login successful")
+                print("Successfully log in user: \(result?.user.uid ?? "")")
                 isAuthenticated = true
             }
         }
