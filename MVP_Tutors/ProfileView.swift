@@ -2,7 +2,7 @@ import SwiftUI
 import PhotosUI
 import Firebase
 import FirebaseAuth
-//Note: Fix Logout so that it exits out into the login view
+
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool

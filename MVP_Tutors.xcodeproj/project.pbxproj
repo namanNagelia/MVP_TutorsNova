@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5370AF942AE745D50069649B /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5370AF932AE745D50069649B /* AvatarView.swift */; };
 		FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6A04732AD583F900380C0B /* ResetPassword.swift */; };
 		FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */; };
 		FBDE465A2ACD17BA00CAC59B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */; };
@@ -49,7 +48,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5370AF932AE745D50069649B /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		FB6A04732AD583F900380C0B /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
 				FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */,
 				FBFDFE2C2AC3913300CD57C4 /* Preview Content */,
-				5370AF932AE745D50069649B /* AvatarView.swift */,
 			);
 			path = MVP_Tutors;
 			sourceTree = "<group>";
@@ -271,7 +268,6 @@
 				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
 				FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */,
-				5370AF942AE745D50069649B /* AvatarView.swift in Sources */,
 				FBFDFE272AC3913100CD57C4 /* MVP_TutorsApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
