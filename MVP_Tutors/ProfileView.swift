@@ -17,16 +17,6 @@ struct ProfileView: View {
                     .frame(width: 100, height: 100)
                     .clipShape(Circle())
                 
-                /*
-                 Button(action: {
-                 openFilePicker()
-                 }) {
-                 Text("Edit Avatar")
-                 .padding(.top, 5)
-                 .padding(.bottom, 5)
-                 }
-                 */
-                
                 PhotosPicker(
                     selection: $selection,
                     matching: .images
