@@ -6,24 +6,44 @@ import FirebaseAuth
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool
-    @State private var selection: PhotosPickerItem?
+    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var selectedPhotoData: Data?
     @State private var user: User?
     
     var body: some View {
         VStack {
             if let user = $user.wrappedValue {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
+                
+                if let selectedPhotoData,
+                   let image = UIImage(data: selectedPhotoData) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                } else {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .clipShape(Circle())
+                }
+                
+                
                 
                 PhotosPicker(
-                    selection: $selection,
+                    selection: $selectedPhoto,
                     matching: .images
                 ) {
                     Text("Edit Avatar")
                         .padding(.top, 5)
                         .padding(.bottom, 5)
+                }.onChange(of: selectedPhoto) { // onChange runs each time selectedPhoto is changed
+                    // Runs async task
+                    Task {
+                        // Runs asyncronous function of converting the image to data
+                        if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
+                            selectedPhotoData = data
+                        }
+                    }
                 }
                 
                 
