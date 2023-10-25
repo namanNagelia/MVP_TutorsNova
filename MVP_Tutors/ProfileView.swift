@@ -2,49 +2,29 @@ import SwiftUI
 import PhotosUI
 import Firebase
 import FirebaseAuth
+import PhotoSelectAndCrop
+
 
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var selectedPhotoData: Data?
+    @State private var isEditMode: Bool = true
+    @State private var renderingMode: SymbolRenderingMode = .hierarchical
     @State private var user: User?
+    @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color.init(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
+    @State private var themeColor: Color = Color.accentColor
     
+    let size: CGFloat = 220
     var body: some View {
         VStack {
             if let user = $user.wrappedValue {
                 
-                if let selectedPhotoData,
-                   let image = UIImage(data: selectedPhotoData) {
-                    Image(uiImage: image)
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .clipShape(Circle())
-                }
-                
-                
-                
-                PhotosPicker(
-                    selection: $selectedPhoto,
-                    matching: .images
-                ) {
-                    Text("Edit Avatar")
-                        .padding(.top, 5)
-                        .padding(.bottom, 5)
-                }.onChange(of: selectedPhoto) { // onChange runs each time selectedPhoto is changed
-                    // Runs async task
-                    Task {
-                        // Runs asyncronous function of converting the image to data
-                        if let data = try? await selectedPhoto?.loadTransferable(type: Data.self) {
-                            selectedPhotoData = data
-                        }
-                    }
-                }
+                ImagePane(image: ImageAttributes(withSFSymbol: "person.crop.circle.fill"),
+                          isEditMode: $isEditMode,
+                          renderingMode: renderingMode,
+                          colors: colors)
+                    .frame(width: size, height: size)
+                    .foregroundColor(themeColor)
                 
                 
                 

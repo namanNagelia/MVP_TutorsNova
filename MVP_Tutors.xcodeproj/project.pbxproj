@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		53ADC47F2AE8791500988275 /* PhotoSelectAndCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */; };
 		FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6A04732AD583F900380C0B /* ResetPassword.swift */; };
 		FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */; };
 		FBDE465A2ACD17BA00CAC59B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */; };
@@ -82,6 +83,7 @@
 				FBDE46C32ACD195800CAC59B /* FirebaseRemoteConfigSwift in Frameworks */,
 				FBDE46B52ACD195800CAC59B /* FirebaseInAppMessaging-Beta in Frameworks */,
 				FBDE46A72ACD195800CAC59B /* FirebaseDatabaseSwift in Frameworks */,
+				53ADC47F2AE8791500988275 /* PhotoSelectAndCrop in Frameworks */,
 				FBDE46B12ACD195800CAC59B /* FirebaseFunctions in Frameworks */,
 				FBDE46C72ACD195800CAC59B /* FirebaseStorageCombine-Community in Frameworks */,
 				FBDE46C12ACD195800CAC59B /* FirebaseRemoteConfig in Frameworks */,
@@ -202,6 +204,7 @@
 				FBDE46C22ACD195800CAC59B /* FirebaseRemoteConfigSwift */,
 				FBDE46C42ACD195800CAC59B /* FirebaseStorage */,
 				FBDE46C62ACD195800CAC59B /* FirebaseStorageCombine-Community */,
+				53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */,
 			);
 			productName = MVP_Tutors;
 			productReference = FBFDFE232AC3913100CD57C4 /* MVP_Tutors.app */;
@@ -233,6 +236,7 @@
 			mainGroup = FBFDFE1A2AC3913100CD57C4;
 			packageReferences = (
 				FBDE46912ACD195800CAC59B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */,
 			);
 			productRefGroup = FBFDFE242AC3913100CD57C4 /* Products */;
 			projectDirPath = "";
@@ -482,6 +486,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Rillieux/PhotoSelectAndCrop.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.4;
+			};
+		};
 		FBDE46912ACD195800CAC59B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -493,6 +505,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */;
+			productName = PhotoSelectAndCrop;
+		};
 		FBDE46922ACD195800CAC59B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = FBDE46912ACD195800CAC59B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
