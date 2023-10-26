@@ -5,7 +5,19 @@ import FirebaseAuth
 import FirebaseStorage
 import PhotoSelectAndCrop
 
-
+class FirebaseManager: NSObject {
+    let auth: Auth
+    let storage: Storage
+    
+    static let shared = FirebaseManager()
+    
+    override init() {
+        self.auth = Auth.auth()
+        self.storage = Storage.storage()
+        
+        super.init()
+    }
+}
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool
@@ -15,9 +27,6 @@ struct ProfileView: View {
     @State private var user: User?
     @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color.init(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
     @State private var themeColor: Color = Color.accentColor
-    
-    let storage = Storage.storage()
-    var storageRef: StorageReference
 
     
     let size: CGFloat = 220
@@ -32,7 +41,11 @@ struct ProfileView: View {
                     .frame(width: size, height: size)
                     .foregroundColor(themeColor)
                     .onChange(of: image.image) {
-                        print(image.image)
+                        // We need to convert image.image from a Image type to a UIImage type so we can represent it as jpeg data
+                        let uiImage = ImageRenderer(content: image.image).uiImage
+                        if let uiImage = uiImage {
+                            persistImageToStorage(profileImage: uiImage)
+                        }
                     }
 
                 
@@ -75,9 +88,34 @@ struct ProfileView: View {
         }
     }
     
+    private func persistImageToStorage(profileImage: UIImage) {
+        let filename = UUID().uuidString
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid
+            else { return }
+        
+        let ref = FirebaseManager.shared.storage.reference(withPath: uid)
+        
+        guard let imageData = profileImage.jpegData(compressionQuality: 0.5) else { return }
+        
+        ref.putData(imageData, metadata: nil) { metadata, err in
+            if let err = err {
+                print("Failed to push image to Storage: \(err)")
+                return
+            }
+            
+            ref.downloadURL { url, err in
+                if let err = err {
+                    print("Failed to retrieve downloadURL: \(err)")
+                    return
+                }
+                
+                print("successfully storeed image with url: \(url?.absoluteString ?? "")")
+            }
+        }
+    }
+    
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
-        self.storageRef = storage.reference()
     }
 }
 
