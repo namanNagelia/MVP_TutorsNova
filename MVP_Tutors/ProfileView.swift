@@ -3,17 +3,20 @@ import PhotosUI
 import Firebase
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseFirestore
 import PhotoSelectAndCrop
 
 class FirebaseManager: NSObject {
     let auth: Auth
     let storage: Storage
+    let firestore: Firestore
     
     static let shared = FirebaseManager()
     
     override init() {
         self.auth = Auth.auth()
         self.storage = Storage.storage()
+        self.firestore = Firestore.firestore()
         
         super.init()
     }
@@ -89,29 +92,64 @@ struct ProfileView: View {
     }
     
     private func persistImageToStorage(profileImage: UIImage) {
-        let filename = UUID().uuidString
+        // checks if logged in user has a UID
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid
             else { return }
         
+        // create pointer to a new storage object
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         
+        // check if we have a profileImage, if so convert it to JPEG data
         guard let imageData = profileImage.jpegData(compressionQuality: 0.5) else { return }
         
+        // upload data to our pointer
         ref.putData(imageData, metadata: nil) { metadata, err in
+            // if we have an error...
             if let err = err {
                 print("Failed to push image to Storage: \(err)")
                 return
             }
             
+            // retrieve the URL of the downloaded image
             ref.downloadURL { url, err in
+                // if we have an error...
                 if let err = err {
                     print("Failed to retrieve downloadURL: \(err)")
                     return
                 }
                 
                 print("successfully storeed image with url: \(url?.absoluteString ?? "")")
+                
+                // checks if we have a url
+                guard let url = url else { return }
+                
+                storeUserInformation(imageProfileUrl: url) // adds it to FireStore
             }
         }
+    }
+    
+    private func storeUserInformation(imageProfileUrl: URL) {
+        // Checks if logged in user has UID
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        // Checks if logged in user has email
+        guard let email = FirebaseManager.shared.auth.currentUser?.email else {
+            return
+        }
+        
+        // document data
+        let userData = ["email": email, "uid": uid, "profileImageUrl": imageProfileUrl.absoluteString]
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).setData(userData, completion: { err in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            print("Successfully created user")
+        })
     }
     
     init(isAuthenticated: Binding<Bool>) {
