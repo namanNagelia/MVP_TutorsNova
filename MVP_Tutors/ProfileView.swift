@@ -25,7 +25,7 @@ struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool
     @State private var isEditMode: Bool = true
-    @StateObject private var image = ImageAttributes(withSFSymbol: "person.crop.circle.fill")
+    @StateObject private var image: ImageAttributes
     @State private var renderingMode: SymbolRenderingMode = .hierarchical
     @State private var user: User?
     @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color.init(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
@@ -85,10 +85,11 @@ struct ProfileView: View {
         }
     }
     
-    func fetchUserData() {
-        if let currentUser = Auth.auth().currentUser {
+    private func fetchUserData() {
+        if let currentUser = FirebaseManager.shared.auth.currentUser {
             user = currentUser
         }
+    
     }
     
     private func persistImageToStorage(profileImage: UIImage) {
@@ -154,6 +155,33 @@ struct ProfileView: View {
     
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        let profileImg = FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error -> Any in
+            if let error = error {
+                print("Failed to fetch current use: ", error)
+                return ""
+            }
+            
+            guard let data = snapshot?.data() else {
+                return ""
+            }
+            
+            return data["profileImageUrl"]
+        }
+        
+        if profileImg != "" {
+            
+            self._image = StateObject(wrappedValue: new ImageAttributes(image: profileImg)
+        } else {
+            self._image = StateObject(wrappedValue: ImageAttributes(withSFSymbol: "person.crop.circle.fill"))
+        }
+        
+    
+        
     }
 }
 
