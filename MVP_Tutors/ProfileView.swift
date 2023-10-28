@@ -5,7 +5,13 @@ import FirebaseStorage
 import PhotosUI
 import SwiftUI
 
-
+class appUser: ObservableObject{
+    @Published var userid: String = ""
+    @Published var profileImgString: String = ""
+    @Published var firstName: String = ""
+    @Published var lastName: String = ""
+    @Published var email: String = ""
+}
 
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -17,11 +23,8 @@ struct ProfileView: View {
     @State private var themeColor: Color = .accentColor
     @State var shouldShowImagePicker = false
     @State var image: UIImage?
-    @State public var userid: String = ""
-     @State public var profileImgString: String = ""
-     @State public var firstName: String = ""
-     @State public var lastName: String = ""
-     @State public var email: String = ""
+    @ObservedObject var appUserInstance: appUser
+
     
     let size: CGFloat = 220
     var body: some View {
@@ -90,7 +93,7 @@ struct ProfileView: View {
         }
     }
     
-    private func fetchUserData() {
+    public func fetchUserData() {
         if let currentUser = FirebaseManager.shared.auth.currentUser {
             user = currentUser
         }
@@ -111,13 +114,15 @@ struct ProfileView: View {
             }
             print(data)
             
-             profileImgString = data["profileImageUrl"] as? String ?? ""
-             userid = data["uid"] as? String ?? ""
-             firstName = data["firstName"] as? String ?? ""
-             lastName = data["lastName"] as? String ?? ""
-             email = data["email"] as? String ?? ""
+            appUserInstance.profileImgString = data["profileImageUrl"] as? String ?? ""
+            appUserInstance.userid = data["uid"] as? String ?? ""
+            appUserInstance.firstName = data["firstName"] as? String ?? ""
+            appUserInstance.lastName = data["lastName"] as? String ?? ""
+            appUserInstance.email = data["email"] as? String ?? ""
             
-            if let url = URL(string: profileImgString) {
+
+            
+            if let url = URL(string: appUserInstance.profileImgString) {
                 URLSession.shared.dataTask(with: url) { data, _, error in
                     if let error = error {
                         print("Failed to load image data: \(error)")
@@ -196,9 +201,9 @@ struct ProfileView: View {
         }
     }
     
-    init(isAuthenticated: Binding<Bool>) {
-        self._isAuthenticated = isAuthenticated
-   
-    }
+    init(isAuthenticated: Binding<Bool>, appUserInstance: appUser) {
+            self._isAuthenticated = isAuthenticated
+            self.appUserInstance = appUserInstance
+        }
 
 }

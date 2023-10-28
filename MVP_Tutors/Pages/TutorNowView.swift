@@ -1,21 +1,21 @@
-//
-//  TutorNowView.swift
-//  MVP_Tutors
-//
-//  Created by Naman Nagelia on 9/26/23.
-//
-
 import SwiftUI
 
 struct TutorNowView: View {
+    @ObservedObject var appUserInstance: appUser  // Assuming you have an @ObservedObject for your appUser
+
     var body: some View {
-        Text("Tutoring Page")
-            .font(.largeTitle)
-            .padding()
+        VStack {
+            Text("Tutoring Page")
+                .font(.largeTitle)
+                .padding()
+
+            if !appUserInstance.userid.isEmpty {
+                Text("User ID: \(appUserInstance.userid)")
+            }
+
+            if !appUserInstance.profileImgString.isEmpty {
+                Text("Profile Image URL: \(appUserInstance.profileImgString)")
+            }
+        }
     }
-}
-
-
-#Preview{
-    TutorNowView()
 }

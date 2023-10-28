@@ -6,6 +6,7 @@ struct ContentView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var isProfileView = false
     @State private var isAuthenticated = false
+    @ObservedObject var appUserInstance = appUser()
     
     var body: some View {
         if (isAuthenticated){
@@ -39,12 +40,12 @@ struct ContentView: View {
                 .frame(height: 30.0)
                 
                 .sheet(isPresented: $isProfileView) {
-                    ProfileView(isAuthenticated: $isAuthenticated)
+                    ProfileView(isAuthenticated: $isAuthenticated,appUserInstance: appUserInstance)
                 }
                 
                 // tabs
                 TabView(selection: $selectedTab) {
-                    TutorNowView()
+                    TutorNowView(appUserInstance: appUserInstance)
                         .tabItem {
                             Image(systemName: "graduationcap.fill")
                             Text("Tutoring")
