@@ -1,7 +1,8 @@
 import Firebase
-import SwiftUI
 import FirebaseAuth
-//To Do: Popups for error handling, and send emails 
+import SwiftUI
+// To Do: Popups for error handling, and send emails
+// Pop up if account already exists
 struct AuthView: View {
     @State private var firstName = ""
     @State private var lastName = ""
@@ -18,19 +19,19 @@ struct AuthView: View {
     @State private var resetEmail = ""
     @State private var isPasswordResetAlertPresented = false
     @State private var passwordResetError = ""
-    @State private var isResetPasswordViewPresented = false 
+    @State private var isResetPasswordViewPresented = false
 
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
     }
-
+    
     var body: some View {
         NavigationView {
             VStack {
                 Text(isRegistering ? "Create an Account" : "Log In")
                     .font(.largeTitle)
                     .padding(.bottom, 20)
-
+                
                 if isRegistering {
                     TextField("First Name", text: $firstName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -39,13 +40,20 @@ struct AuthView: View {
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                 }
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                Group{
+                    
+                    TextField("Email", text: $email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .padding()
 
-                SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                }
+                .padding(8)
+
 
                 Button(action: isRegistering ? register : login) {
                     Text(isRegistering ? "Register" : "Login")
@@ -55,7 +63,7 @@ struct AuthView: View {
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
-
+                
                 if !isRegistering {
                     Button(action: {
                         isResetPasswordViewPresented = true
@@ -65,13 +73,13 @@ struct AuthView: View {
                             .padding()
                     }
                 }
-
+                
                 Button(action: toggleRegister) {
                     Text(isRegistering ? "Already have an account? Log in" : "Don't have an account? Create one")
                         .foregroundColor(.blue)
                         .padding()
                 }
-
+                
                 Spacer()
             }
             .padding()
@@ -95,26 +103,27 @@ struct AuthView: View {
             }
         }
     }
-
+    
     func toggleRegister() {
         isRegistering.toggle()
     }
-
+    
     func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { _, error in
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Login error: \(error.localizedDescription)")
                 loginError = "Login failed. Please check your email and password."
                 isLoginErrorAlertPresented = true
             } else {
-                print("Login successful")
+                print("Successfully log in user: \(result?.user.uid ?? "")")
                 isAuthenticated = true
             }
         }
     }
-
- func register() {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+    
+    func register() {
+        print("running register..")
+        FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { authResult, error in
             if let error = error as? NSError {
                 if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
                     DispatchQueue.main.async {
@@ -140,6 +149,7 @@ struct AuthView: View {
                             print("Registration successful")
                             showAlert = true
                             login()
+                            storeUserInformation()
                             // Clear input fields
                             firstName = ""
                             lastName = ""
@@ -150,15 +160,37 @@ struct AuthView: View {
                 }
             }
         }
+        
+        
     }
-
-
+    
+    private func storeUserInformation() {
+        
+        print("Running store...")
+        // Checks if logged in user has UID
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        // Checks if logged in user has email
+        guard let email = FirebaseManager.shared.auth.currentUser?.email else {
+            return
+        }
+        
+        // document data
+        let userData = ["email": email, "uid": uid, "profileImageUrl": "", "firstName": firstName, "lastName": lastName]
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).setData(userData, completion: { err in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            print("Successfully created user")
+        })
+    }
 }
 
-struct AuthView_Previews: PreviewProvider {
-    @State static var isAuthenticated = true
-
-    static var previews: some View {
-        AuthView(isAuthenticated: $isAuthenticated)
-    }
+#Preview {
+    AuthView(isAuthenticated: .constant(false))
 }
