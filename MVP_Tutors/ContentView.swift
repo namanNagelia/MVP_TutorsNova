@@ -1,4 +1,6 @@
 import SwiftUI
+
+
 struct ContentView: View {
     @State private var selectedTab = 1
     @Environment(\.colorScheme) var colorScheme
@@ -64,7 +66,7 @@ struct ContentView: View {
                     selectedTab = 1
                 }
             }
-        }else {
+        } else {
             NavigationView {
                 AuthView(isAuthenticated: $isAuthenticated)
             }
@@ -73,7 +75,6 @@ struct ContentView: View {
         }
     }
 }
-
 #Preview{
     ContentView()
 }

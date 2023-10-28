@@ -34,7 +34,8 @@
 		53986F902AE9E33700A73EC8 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F8F2AE9E33700A73EC8 /* FirebaseRemoteConfigSwift */; };
 		53986F922AE9E33700A73EC8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F912AE9E33700A73EC8 /* FirebaseStorage */; };
 		53986F942AE9E33700A73EC8 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F932AE9E33700A73EC8 /* FirebaseStorageCombine-Community */; };
-		53ADC47F2AE8791500988275 /* PhotoSelectAndCrop in Frameworks */ = {isa = PBXBuildFile; productRef = 53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */; };
+		53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA079E2AECA91B007615E5 /* ImagePicker.swift */; };
+		53DA07A12AECAEA6007615E5 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */; };
 		FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6A04732AD583F900380C0B /* ResetPassword.swift */; };
 		FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */; };
 		FBDE465A2ACD17BA00CAC59B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */; };
@@ -49,6 +50,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		53DA079E2AECA91B007615E5 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		FB6A04732AD583F900380C0B /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -91,7 +94,6 @@
 				53986F922AE9E33700A73EC8 /* FirebaseStorage in Frameworks */,
 				53986F722AE9E33700A73EC8 /* FirebaseDatabase in Frameworks */,
 				53986F942AE9E33700A73EC8 /* FirebaseStorageCombine-Community in Frameworks */,
-				53ADC47F2AE8791500988275 /* PhotoSelectAndCrop in Frameworks */,
 				53986F6C2AE9E33700A73EC8 /* FirebaseAuth in Frameworks */,
 				53986F762AE9E33700A73EC8 /* FirebaseDynamicLinks in Frameworks */,
 				53986F782AE9E33700A73EC8 /* FirebaseFirestore in Frameworks */,
@@ -140,6 +142,7 @@
 		FBFDFE252AC3913100CD57C4 /* MVP_Tutors */ = {
 			isa = PBXGroup;
 			children = (
+				53DA079E2AECA91B007615E5 /* ImagePicker.swift */,
 				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
 				FBF97B162AE5D1AF00BCA3D2 /* LogIn */,
 				FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */,
@@ -148,6 +151,7 @@
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
 				FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */,
 				FBFDFE2C2AC3913300CD57C4 /* Preview Content */,
+				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
 			);
 			path = MVP_Tutors;
 			sourceTree = "<group>";
@@ -177,7 +181,6 @@
 			);
 			name = MVP_Tutors;
 			packageProductDependencies = (
-				53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */,
 				53986F5F2AE9E33700A73EC8 /* FirebaseAnalytics */,
 				53986F612AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion */,
 				53986F632AE9E33700A73EC8 /* FirebaseAnalyticsSwift */,
@@ -235,7 +238,6 @@
 			);
 			mainGroup = FBFDFE1A2AC3913100CD57C4;
 			packageReferences = (
-				53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */,
 				53986F5E2AE9E33700A73EC8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = FBFDFE242AC3913100CD57C4 /* Products */;
@@ -267,7 +269,9 @@
 			files = (
 				FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */,
 				FBFDFE352AC3926500CD57C4 /* TutorNowView.swift in Sources */,
+				53DA07A12AECAEA6007615E5 /* FirebaseManager.swift in Sources */,
 				FBFDFE372AC3927800CD57C4 /* ListingsView.swift in Sources */,
+				53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */,
 				FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */,
 				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
@@ -494,14 +498,6 @@
 				minimumVersion = 10.16.0;
 			};
 		};
-		53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Rillieux/PhotoSelectAndCrop.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.4;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -639,11 +635,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 53986F5E2AE9E33700A73EC8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
-		};
-		53ADC47E2AE8791500988275 /* PhotoSelectAndCrop */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 53ADC47D2AE8791500988275 /* XCRemoteSwiftPackageReference "PhotoSelectAndCrop" */;
-			productName = PhotoSelectAndCrop;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -4,61 +4,59 @@ import Firebase
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
-import PhotoSelectAndCrop
 
-class FirebaseManager: NSObject {
-    let auth: Auth
-    let storage: Storage
-    let firestore: Firestore
-    
-    static let shared = FirebaseManager()
-    
-    override init() {
-        self.auth = Auth.auth()
-        self.storage = Storage.storage()
-        self.firestore = Firestore.firestore()
-        
-        super.init()
-    }
-}
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var isAuthenticated: Bool
     @State private var isEditMode: Bool = true
-    @StateObject private var image: ImageAttributes
     @State private var renderingMode: SymbolRenderingMode = .hierarchical
     @State private var user: User?
     @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color.init(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
     @State private var themeColor: Color = Color.accentColor
-
+    @State var shouldShowImagePicker = false
+    @State var image: UIImage?
     
     let size: CGFloat = 220
     var body: some View {
         VStack {
             if let user = $user.wrappedValue {
-                
-                ImagePane(image: image,
-                          isEditMode: $isEditMode,
-                          renderingMode: renderingMode,
-                          colors: colors)
-                    .frame(width: size, height: size)
-                    .foregroundColor(themeColor)
-                    .onChange(of: image.image) {
-                        // We need to convert image.image from a Image type to a UIImage type so we can represent it as jpeg data
-                        let uiImage = ImageRenderer(content: image.image).uiImage
-                        if let uiImage = uiImage {
-                            persistImageToStorage(profileImage: uiImage)
+                Button {
+                    shouldShowImagePicker.toggle()
+                } label: {
+                    
+                    VStack {
+                        if let image = self.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 128, height: 128)
+                                .cornerRadius(64)
+                        } else {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 64))
+                                .padding()
+                                .foregroundColor(Color(.label))
                         }
                     }
-
+                    .overlay(RoundedRectangle(cornerRadius: 64)
+                        .stroke(Color.black, lineWidth: 3)
+                    )
+                    
+                }
                 
                 
-                
-                /*
                 Text(user.displayName ?? "Display Name")
                     .font(.title)
-                */
-
+                
+                Button("Save Changes") {
+                    persistImageToStorage()
+                }
+                .frame(maxWidth: 100)
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
                 
                 Button("Logout") {
                     do {
@@ -80,6 +78,9 @@ struct ProfileView: View {
                 Text(String("Is Authenticated: " + String(isAuthenticated)))
             }
         }
+        .fullScreenCover(isPresented: $shouldShowImagePicker, onDismiss: nil) {
+            ImagePicker(image: $image)
+        }
         .onAppear {
             fetchUserData()
         }
@@ -89,19 +90,55 @@ struct ProfileView: View {
         if let currentUser = FirebaseManager.shared.auth.currentUser {
             user = currentUser
         }
-    
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("Failed to fetch current use: ", error)
+                return
+            }
+            
+            guard let data = snapshot?.data() else {
+                // _image = StateObject(wrappedValue: ImageAttributes(withSFSymbol: "person.crop.circle.fill"))
+                return
+            }
+            
+            let profileImgString = data["profileImageUrl"] as! String
+            
+            print(profileImgString)
+            
+            if let url = URL(string: profileImgString) {
+                URLSession.shared.dataTask(with: url) { data, response, error in
+                    if let error = error {
+                        print("Failed to load image data: \(error)")
+                        return
+                    }
+                    
+                    if let data = data, let uiImage = UIImage(data: data) {
+                        print("Yes")
+                        DispatchQueue.main.async {
+                            self.$image.wrappedValue = uiImage
+                        }
+                    }
+                }.resume()
+            }
+        }
+        
     }
     
-    private func persistImageToStorage(profileImage: UIImage) {
+    private func persistImageToStorage() {
         // checks if logged in user has a UID
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid
-            else { return }
+        else { print("No current user - persistImageToStorage()"); return }
         
         // create pointer to a new storage object
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         
         // check if we have a profileImage, if so convert it to JPEG data
-        guard let imageData = profileImage.jpegData(compressionQuality: 0.5) else { return }
+        guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
         
         // upload data to our pointer
         ref.putData(imageData, metadata: nil) { metadata, err in
@@ -124,67 +161,36 @@ struct ProfileView: View {
                 // checks if we have a url
                 guard let url = url else { return }
                 
-                storeUserInformation(imageProfileUrl: url) // adds it to FireStore
+                updateUserInformation(imageProfileUrl: url) // adds it to FireStore
             }
         }
     }
     
-    private func storeUserInformation(imageProfileUrl: URL) {
+    private func updateUserInformation(imageProfileUrl: URL) {
         // Checks if logged in user has UID
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            print("No current user - updateUserInformation()")
             return
         }
         
-        // Checks if logged in user has email
-        guard let email = FirebaseManager.shared.auth.currentUser?.email else {
-            return
-        }
+        // Define the data you want to update
+        let updatedData = ["profileImageUrl": imageProfileUrl.absoluteString]
         
-        // document data
-        let userData = ["email": email, "uid": uid, "profileImageUrl": imageProfileUrl.absoluteString]
+        // Reference the document for the user using their UID
+        let userDocumentReference = FirebaseManager.shared.firestore.collection("users").document(uid)
         
-        FirebaseManager.shared.firestore.collection("users").document(uid).setData(userData, completion: { err in
-            if let err = err {
-                print(err)
+        // Use the updateData method to update the specific fields in the document
+        userDocumentReference.updateData(updatedData) { error in
+            if let error = error {
+                print("Error updating user information: \(error)")
                 return
             }
             
-            print("Successfully created user")
-        })
+            print("User information updated successfully")
+        }
     }
     
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
-        
-        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
-            return
-        }
-        
-        let profileImg = FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error -> Any in
-            if let error = error {
-                print("Failed to fetch current use: ", error)
-                return ""
-            }
-            
-            guard let data = snapshot?.data() else {
-                return ""
-            }
-            
-            return data["profileImageUrl"]
-        }
-        
-        if profileImg != "" {
-            
-            self._image = StateObject(wrappedValue: new ImageAttributes(image: profileImg)
-        } else {
-            self._image = StateObject(wrappedValue: ImageAttributes(withSFSymbol: "person.crop.circle.fill"))
-        }
-        
-    
-        
     }
-}
-
-#Preview{
-    ProfileView(isAuthenticated: .constant(true))
 }
