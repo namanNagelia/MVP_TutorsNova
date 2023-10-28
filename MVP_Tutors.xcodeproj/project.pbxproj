@@ -104,12 +104,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FB7BD6A52AECC27B00D88AC0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		FBE880AE2ACC9F6000DD801E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
 				FBFDFE342AC3926500CD57C4 /* TutorNowView.swift */,
 				FBFDFE362AC3927800CD57C4 /* ListingsView.swift */,
 				FBFDFE382AC3928800CD57C4 /* ChatsView.swift */,
+				FB7BD6A52AECC27B00D88AC0 /* Utils */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -151,7 +160,6 @@
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
 				FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */,
 				FBFDFE2C2AC3913300CD57C4 /* Preview Content */,
-				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
 			);
 			path = MVP_Tutors;
 			sourceTree = "<group>";
@@ -411,7 +419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MVP_Tutors/Preview Content\"";
-				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
+				DEVELOPMENT_TEAM = DR8M2Z7LQW;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -426,7 +434,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-Tutors";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -442,7 +450,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MVP_Tutors/Preview Content\"";
-				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
+				DEVELOPMENT_TEAM = DR8M2Z7LQW;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -458,7 +466,7 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-Tutors";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

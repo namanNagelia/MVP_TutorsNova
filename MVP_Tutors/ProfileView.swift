@@ -1,9 +1,11 @@
-import SwiftUI
-import PhotosUI
 import Firebase
 import FirebaseAuth
-import FirebaseStorage
 import FirebaseFirestore
+import FirebaseStorage
+import PhotosUI
+import SwiftUI
+
+
 
 struct ProfileView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -11,10 +13,15 @@ struct ProfileView: View {
     @State private var isEditMode: Bool = true
     @State private var renderingMode: SymbolRenderingMode = .hierarchical
     @State private var user: User?
-    @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color.init(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
-    @State private var themeColor: Color = Color.accentColor
+    @State private var colors: [Color] = [.accentColor, Color(.systemTeal), Color(red: 248.0 / 255.0, green: 218.0 / 255.0, blue: 174.0 / 255.0)]
+    @State private var themeColor: Color = .accentColor
     @State var shouldShowImagePicker = false
     @State var image: UIImage?
+    @State public var userid: String = ""
+     @State public var profileImgString: String = ""
+     @State public var firstName: String = ""
+     @State public var lastName: String = ""
+     @State public var email: String = ""
     
     let size: CGFloat = 220
     var body: some View {
@@ -23,7 +30,6 @@ struct ProfileView: View {
                 Button {
                     shouldShowImagePicker.toggle()
                 } label: {
-                    
                     VStack {
                         if let image = self.image {
                             Image(uiImage: image)
@@ -41,22 +47,20 @@ struct ProfileView: View {
                     .overlay(RoundedRectangle(cornerRadius: 64)
                         .stroke(Color.black, lineWidth: 3)
                     )
-                    
                 }
-                
                 
                 Text(user.displayName ?? "Display Name")
                     .font(.title)
                 
                 Button("Save Changes") {
                     persistImageToStorage()
+                    fetchUserData()
                 }
                 .frame(maxWidth: 100)
                 .padding()
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(10)
-                
                 
                 Button("Logout") {
                     do {
@@ -74,7 +78,7 @@ struct ProfileView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(10)
-            } else{
+            } else {
                 Text(String("Is Authenticated: " + String(isAuthenticated)))
             }
         }
@@ -102,16 +106,19 @@ struct ProfileView: View {
             }
             
             guard let data = snapshot?.data() else {
-                // _image = StateObject(wrappedValue: ImageAttributes(withSFSymbol: "person.crop.circle.fill"))
+                print("No data found")
                 return
             }
+            print(data)
             
-            let profileImgString = data["profileImageUrl"] as! String
-            
-            print(profileImgString)
+             profileImgString = data["profileImageUrl"] as? String ?? ""
+             userid = data["uid"] as? String ?? ""
+             firstName = data["firstName"] as? String ?? ""
+             lastName = data["lastName"] as? String ?? ""
+             email = data["email"] as? String ?? ""
             
             if let url = URL(string: profileImgString) {
-                URLSession.shared.dataTask(with: url) { data, response, error in
+                URLSession.shared.dataTask(with: url) { data, _, error in
                     if let error = error {
                         print("Failed to load image data: \(error)")
                         return
@@ -126,7 +133,6 @@ struct ProfileView: View {
                 }.resume()
             }
         }
-        
     }
     
     private func persistImageToStorage() {
@@ -138,10 +144,10 @@ struct ProfileView: View {
         let ref = FirebaseManager.shared.storage.reference(withPath: uid)
         
         // check if we have a profileImage, if so convert it to JPEG data
-        guard let imageData = self.image?.jpegData(compressionQuality: 0.5) else { return }
+        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
         
         // upload data to our pointer
-        ref.putData(imageData, metadata: nil) { metadata, err in
+        ref.putData(imageData, metadata: nil) { _, err in
             // if we have an error...
             if let err = err {
                 print("Failed to push image to Storage: \(err)")
@@ -192,5 +198,7 @@ struct ProfileView: View {
     
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
+   
     }
+
 }
