@@ -120,8 +120,6 @@ struct ProfileView: View {
             appUserInstance.lastName = data["lastName"] as? String ?? ""
             appUserInstance.email = data["email"] as? String ?? ""
             
-
-            
             if let url = URL(string: appUserInstance.profileImgString) {
                 URLSession.shared.dataTask(with: url) { data, _, error in
                     if let error = error {

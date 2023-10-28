@@ -40,7 +40,7 @@
 		FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */; };
 		FBDE465A2ACD17BA00CAC59B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */; };
 		FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE880AF2ACC9F8C00DD801E /* AuthView.swift */; };
-		FBFDFE272AC3913100CD57C4 /* MVP_TutorsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */; };
+		FBFDFE272AC3913100CD57C4 /* TutorNovaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE262AC3913100CD57C4 /* TutorNovaApp.swift */; };
 		FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFDFE282AC3913100CD57C4 /* ContentView.swift */; };
 		FBFDFE2B2AC3913300CD57C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */; };
 		FBFDFE2E2AC3913300CD57C4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBFDFE2D2AC3913300CD57C4 /* Preview Assets.xcassets */; };
@@ -56,8 +56,8 @@
 		FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FBE880AF2ACC9F8C00DD801E /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
-		FBFDFE232AC3913100CD57C4 /* MVP_Tutors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVP_Tutors.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVP_TutorsApp.swift; sourceTree = "<group>"; };
+		FBFDFE232AC3913100CD57C4 /* Tutor Nova.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tutor Nova.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBFDFE262AC3913100CD57C4 /* TutorNovaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorNovaApp.swift; sourceTree = "<group>"; };
 		FBFDFE282AC3913100CD57C4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FBFDFE2D2AC3913300CD57C4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -108,34 +108,35 @@
 			isa = PBXGroup;
 			children = (
 				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
+				53DA079E2AECA91B007615E5 /* ImagePicker.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		FBE880AE2ACC9F6000DD801E /* Pages */ = {
+		FBE880AE2ACC9F6000DD801E /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				FBFDFE342AC3926500CD57C4 /* TutorNowView.swift */,
 				FBFDFE362AC3927800CD57C4 /* ListingsView.swift */,
 				FBFDFE382AC3928800CD57C4 /* ChatsView.swift */,
-				FB7BD6A52AECC27B00D88AC0 /* Utils */,
+				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
 			);
-			path = Pages;
+			path = Views;
 			sourceTree = "<group>";
 		};
-		FBF97B162AE5D1AF00BCA3D2 /* LogIn */ = {
+		FBF97B162AE5D1AF00BCA3D2 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
 				FBE880AF2ACC9F8C00DD801E /* AuthView.swift */,
 				FB6A04732AD583F900380C0B /* ResetPassword.swift */,
 			);
-			path = LogIn;
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		FBFDFE1A2AC3913100CD57C4 = {
 			isa = PBXGroup;
 			children = (
-				FBFDFE252AC3913100CD57C4 /* MVP_Tutors */,
+				FBFDFE252AC3913100CD57C4 /* Tutor Nova */,
 				FBFDFE242AC3913100CD57C4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,25 +144,24 @@
 		FBFDFE242AC3913100CD57C4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FBFDFE232AC3913100CD57C4 /* MVP_Tutors.app */,
+				FBFDFE232AC3913100CD57C4 /* Tutor Nova.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FBFDFE252AC3913100CD57C4 /* MVP_Tutors */ = {
+		FBFDFE252AC3913100CD57C4 /* Tutor Nova */ = {
 			isa = PBXGroup;
 			children = (
-				53DA079E2AECA91B007615E5 /* ImagePicker.swift */,
-				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
-				FBF97B162AE5D1AF00BCA3D2 /* LogIn */,
-				FBFDFE262AC3913100CD57C4 /* MVP_TutorsApp.swift */,
+				FB7BD6A52AECC27B00D88AC0 /* Utils */,
+				FBF97B162AE5D1AF00BCA3D2 /* Auth */,
+				FBFDFE262AC3913100CD57C4 /* TutorNovaApp.swift */,
 				FBFDFE282AC3913100CD57C4 /* ContentView.swift */,
-				FBE880AE2ACC9F6000DD801E /* Pages */,
+				FBE880AE2ACC9F6000DD801E /* Views */,
 				FBFDFE2A2AC3913300CD57C4 /* Assets.xcassets */,
 				FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */,
 				FBFDFE2C2AC3913300CD57C4 /* Preview Content */,
 			);
-			path = MVP_Tutors;
+			path = "Tutor Nova";
 			sourceTree = "<group>";
 		};
 		FBFDFE2C2AC3913300CD57C4 /* Preview Content */ = {
@@ -175,9 +175,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FBFDFE222AC3913100CD57C4 /* MVP_Tutors */ = {
+		FBFDFE222AC3913100CD57C4 /* Tutor Nova */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FBFDFE312AC3913300CD57C4 /* Build configuration list for PBXNativeTarget "MVP_Tutors" */;
+			buildConfigurationList = FBFDFE312AC3913300CD57C4 /* Build configuration list for PBXNativeTarget "Tutor Nova" */;
 			buildPhases = (
 				FBFDFE1F2AC3913100CD57C4 /* Sources */,
 				FBFDFE202AC3913100CD57C4 /* Frameworks */,
@@ -187,7 +187,7 @@
 			);
 			dependencies = (
 			);
-			name = MVP_Tutors;
+			name = "Tutor Nova";
 			packageProductDependencies = (
 				53986F5F2AE9E33700A73EC8 /* FirebaseAnalytics */,
 				53986F612AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion */,
@@ -218,7 +218,7 @@
 				53986F932AE9E33700A73EC8 /* FirebaseStorageCombine-Community */,
 			);
 			productName = MVP_Tutors;
-			productReference = FBFDFE232AC3913100CD57C4 /* MVP_Tutors.app */;
+			productReference = FBFDFE232AC3913100CD57C4 /* Tutor Nova.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -236,7 +236,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FBFDFE1E2AC3913100CD57C4 /* Build configuration list for PBXProject "MVP_Tutors" */;
+			buildConfigurationList = FBFDFE1E2AC3913100CD57C4 /* Build configuration list for PBXProject "Tutor Nova" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -252,7 +252,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FBFDFE222AC3913100CD57C4 /* MVP_Tutors */,
+				FBFDFE222AC3913100CD57C4 /* Tutor Nova */,
 			);
 		};
 /* End PBXProject section */
@@ -284,7 +284,7 @@
 				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
 				FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */,
-				FBFDFE272AC3913100CD57C4 /* MVP_TutorsApp.swift in Sources */,
+				FBFDFE272AC3913100CD57C4 /* TutorNovaApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,8 +418,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MVP_Tutors/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -434,7 +434,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.manasnagelia.tutor-nova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -449,8 +449,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"MVP_Tutors/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -466,7 +466,7 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.manasnagelia.tutor-nova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -477,7 +477,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FBFDFE1E2AC3913100CD57C4 /* Build configuration list for PBXProject "MVP_Tutors" */ = {
+		FBFDFE1E2AC3913100CD57C4 /* Build configuration list for PBXProject "Tutor Nova" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBFDFE2F2AC3913300CD57C4 /* Debug */,
@@ -486,7 +486,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FBFDFE312AC3913300CD57C4 /* Build configuration list for PBXNativeTarget "MVP_Tutors" */ = {
+		FBFDFE312AC3913300CD57C4 /* Build configuration list for PBXNativeTarget "Tutor Nova" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FBFDFE322AC3913300CD57C4 /* Debug */,
