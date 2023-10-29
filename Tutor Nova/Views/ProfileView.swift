@@ -11,6 +11,42 @@ class appUser: ObservableObject{
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var email: String = ""
+    
+    public func fetchUserData() {
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            print("Could not Fetch")
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("Failed to fetch current use: ", error)
+                return
+            }
+            
+            guard let data = snapshot?.data() else {
+                print("No data found")
+                return
+            }
+            print(data)
+            
+            self.profileImgString = data["profileImageUrl"] as? String ?? ""
+            self.userid = data["uid"] as? String ?? ""
+            self.firstName = data["firstName"] as? String ?? ""
+            self.lastName = data["lastName"] as? String ?? ""
+            self.email = data["email"] as? String ?? ""
+            
+            if let url = URL(string: self.profileImgString) {
+                URLSession.shared.dataTask(with: url) { data, _, error in
+                    if let error = error {
+                        print("Failed to load image data: \(error)")
+                        return
+                    }
+                }.resume()
+            }
+        }
+    }
 }
 
 struct ProfileView: View {
@@ -57,7 +93,8 @@ struct ProfileView: View {
                 
                 Button("Save Changes") {
                     persistImageToStorage()
-                    fetchUserData()
+                    fetchUserImageData()
+                    appUserInstance.fetchUserData()
                 }
                 .frame(maxWidth: 100)
                 .padding()
@@ -89,11 +126,11 @@ struct ProfileView: View {
             ImagePicker(image: $image)
         }
         .onAppear {
-            fetchUserData()
+            fetchUserImageData()
         }
     }
     
-    public func fetchUserData() {
+    public func fetchUserImageData() {
         if let currentUser = FirebaseManager.shared.auth.currentUser {
             user = currentUser
         }

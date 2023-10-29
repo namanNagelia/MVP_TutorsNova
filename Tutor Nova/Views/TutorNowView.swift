@@ -12,9 +12,15 @@ struct TutorNowView: View {
             if !appUserInstance.userid.isEmpty {
                 Text("User ID: \(appUserInstance.userid)")
             }
+            else{
+                Text("No Image")
+            }
 
             if !appUserInstance.profileImgString.isEmpty {
                 Text("Profile Image URL: \(appUserInstance.profileImgString)")
+            }
+            else{
+                Text("No Image")
             }
         }
     }

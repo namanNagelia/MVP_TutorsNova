@@ -65,6 +65,7 @@ struct ContentView: View {
                 }
                 .onAppear {
                     selectedTab = 1
+                    appUserInstance.fetchUserData()
                 }
             }
         } else {
