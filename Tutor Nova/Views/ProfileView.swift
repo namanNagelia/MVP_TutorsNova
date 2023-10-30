@@ -61,6 +61,7 @@ struct ProfileView: View {
     @State var image: UIImage?
     @ObservedObject var appUserInstance: appUser
 
+
     
     let size: CGFloat = 220
     var body: some View {

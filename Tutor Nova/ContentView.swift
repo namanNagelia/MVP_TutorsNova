@@ -5,11 +5,12 @@ struct ContentView: View {
     @State private var selectedTab = 1
     @Environment(\.colorScheme) var colorScheme
     @State private var isProfileView = false
-    @State private var isAuthenticated = false
     @ObservedObject var appUserInstance = appUser()
+    @EnvironmentObject var appViewModel: AppViewModel
     
     var body: some View {
-        if (isAuthenticated){
+        if (appViewModel.isAuthenticated){
+            
             
             VStack {
                 HStack {
@@ -40,8 +41,9 @@ struct ContentView: View {
                 .frame(height: 30.0)
                 
                 .sheet(isPresented: $isProfileView) {
-                    ProfileView(isAuthenticated: $isAuthenticated,appUserInstance: appUserInstance)
+                    ProfileView(isAuthenticated: $appViewModel.isAuthenticated, appUserInstance: appUserInstance)
                 }
+
                 
                 // tabs
                 TabView(selection: $selectedTab) {
@@ -70,7 +72,7 @@ struct ContentView: View {
             }
         } else {
             NavigationView {
-                AuthView(isAuthenticated: $isAuthenticated)
+                AuthView(isAuthenticated: $appViewModel.isAuthenticated)
             }
             
             

@@ -14,24 +14,31 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 class AppViewModel: ObservableObject {
     @Published var isAuthenticated = false
+    var appUserInstance: appUser // Declare appUserInstance as a property
 
-    init() {
-        // Check UserDefaults for the initial value of isAuthenticated
-        if let storedIsAuthenticated = UserDefaults.standard.value(forKey: "isAuthenticated") as? Bool {
-            self.isAuthenticated = storedIsAuthenticated
+    init(appUserInstance: appUser) {
+        self.appUserInstance = appUserInstance // Initialize appUserInstance
+        // Check if the user is already authenticated
+        if let user = Auth.auth().currentUser {
+            print("User is already authenticated: \(user.uid)")
+            self.isAuthenticated = true
         }
+        
+        // Fetch user data when the app loads
+        appUserInstance.fetchUserData()
     }
 }
 
 @main
 struct MVP_TutorsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject private var appViewModel = AppViewModel()
+    var appUserInstance = appUser() // Initialize appUserInstance
 
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(appViewModel) 
+                .environmentObject(AppViewModel(appUserInstance: appUserInstance))
+            
         }
     }
 }
