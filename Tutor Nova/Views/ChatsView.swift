@@ -1,19 +1,32 @@
 
-
+import FirebaseAuth
 import SwiftUI
+import Firebase
+import FirebaseFirestore
 
 struct ChatsView: View {
     
     @State var shouldShowLogOutOptions = false
+    @EnvironmentObject var appUser: AppUser
     
     private var customNavBar: some View {
         HStack(spacing: 16) {
-            
-            Image(systemName: "person.fill")
-                .font(.system(size: 34, weight: .heavy))
+            //Fix loading and make it the default, and fix resizing. If, person.fill, else...
+            AsyncImage(url: URL(string: "\(appUser.profileImgString )")){
+                image in
+                image.resizable()
+            } placeholder:{
+                ProgressView()
+            }
+            .frame(width:50, height:50)
+            .cornerRadius(44)
+            .overlay(RoundedRectangle(cornerRadius: 44)
+                .stroke(Color(.label), lineWidth: 1)
+            )
+
             
             VStack(alignment: .leading, spacing: 4) {
-                Text("USERNAME")
+                Text("\(appUser.firstName) \(appUser.lastName)")
                     .font(.system(size: 24, weight: .bold))
                 
                 HStack {

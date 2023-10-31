@@ -11,6 +11,7 @@ struct TutorNowView: View {
 
             if !appUser.userid.isEmpty {
                 Text("User ID: \(appUser.userid)")
+                Text("\(appUser.firstName) \(appUser.lastName)")
             }
             else{
                 Text("No Image")
