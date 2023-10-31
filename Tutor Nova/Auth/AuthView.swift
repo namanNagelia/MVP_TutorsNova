@@ -14,13 +14,13 @@ struct AuthView: View {
     @State private var loginError = ""
     @State private var isLoginErrorAlertPresented = false
     @State private var isRegisterAlertPresented = false
-    @State private var RegisterError = ""
+    @State private var registerErr = ""
     // Reset password stuff
     @State private var resetEmail = ""
     @State private var isPasswordResetAlertPresented = false
     @State private var passwordResetError = ""
     @State private var isResetPasswordViewPresented = false
-
+    
     init(isAuthenticated: Binding<Bool>) {
         self._isAuthenticated = isAuthenticated
     }
@@ -47,14 +47,14 @@ struct AuthView: View {
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .padding()
-
+                    
                     SecureField("Password", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                 }
                 .padding(8)
-
-
+                
+                
                 Button(action: isRegistering ? register : login) {
                     Text(isRegistering ? "Register" : "Login")
                         .foregroundColor(.white)
@@ -87,7 +87,7 @@ struct AuthView: View {
             .alert(isPresented: $isRegisterAlertPresented) {
                 Alert(
                     title: Text("Registration Unsuccessful"),
-                    message: Text(RegisterError),
+                    message: Text(registerErr),
                     dismissButton: .default(Text("OK"))
                 )
             }
@@ -104,12 +104,12 @@ struct AuthView: View {
         }
     }
     
-    func toggleRegister() {
+    private func toggleRegister() {
         isRegistering.toggle()
     }
     
-    func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+    private func login() {
+        FirebaseManager.shared.auth.signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 print("Login error: \(error.localizedDescription)")
                 loginError = "Login failed. Please check your email and password."
@@ -121,22 +121,13 @@ struct AuthView: View {
         }
     }
     
-    func register() {
+    private func register() {
         print("running register..")
         FirebaseManager.shared.auth.createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error as? NSError {
-                if error.code == AuthErrorCode.emailAlreadyInUse.rawValue {
-                    DispatchQueue.main.async {
-                        isRegisterAlertPresented = true
-                        RegisterError = "Registration Failed. Email is already in use."
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        isRegisterAlertPresented = true
-                        RegisterError = "Registration Failed. \(error.localizedDescription)"
-                    }
-                    print("Registration error: \(error.localizedDescription)")
-                }
+            if let error = error {
+                print("Register error: \(error.localizedDescription)")
+                registerErr = "Registration Failed. \(error.localizedDescription)"
+                isRegisterAlertPresented = true
             } else if let user = authResult?.user {
                 // Set the user's display name
                 let changeRequest = user.createProfileChangeRequest()
