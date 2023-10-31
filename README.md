@@ -1,3 +1,3 @@
-# MVP_TutorsNova
+# Tutor Nova
 
-Mobile app for Tutors Nova
+iOS mobile app for Tutors Nova, an app aimed to connect learners with tutors.
