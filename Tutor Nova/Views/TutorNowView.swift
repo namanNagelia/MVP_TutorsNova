@@ -1,23 +1,23 @@
 import SwiftUI
 
 struct TutorNowView: View {
-    @ObservedObject var appUserInstance: appUser  // Assuming you have an @ObservedObject for your appUser
-
+    @EnvironmentObject var appUser: AppUser
+    
     var body: some View {
         VStack {
             Text("Tutoring Page")
                 .font(.largeTitle)
                 .padding()
 
-            if !appUserInstance.userid.isEmpty {
-                Text("User ID: \(appUserInstance.userid)")
+            if !appUser.userid.isEmpty {
+                Text("User ID: \(appUser.userid)")
             }
             else{
                 Text("No Image")
             }
 
-            if !appUserInstance.profileImgString.isEmpty {
-                Text("Profile Image URL: \(appUserInstance.profileImgString)")
+            if !appUser.profileImgString.isEmpty {
+                Text("Profile Image URL: \(appUser.profileImgString)")
             }
             else{
                 Text("No Image")

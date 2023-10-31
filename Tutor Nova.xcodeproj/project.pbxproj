@@ -36,6 +36,7 @@
 		53986F942AE9E33700A73EC8 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F932AE9E33700A73EC8 /* FirebaseStorageCombine-Community */; };
 		53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA079E2AECA91B007615E5 /* ImagePicker.swift */; };
 		53DA07A12AECAEA6007615E5 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */; };
+		53F9112D2AF06AC700CCA146 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F9112C2AF06AC700CCA146 /* AppUser.swift */; };
 		FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6A04732AD583F900380C0B /* ResetPassword.swift */; };
 		FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */; };
 		FBDE465A2ACD17BA00CAC59B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		53DA079E2AECA91B007615E5 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		53F9112C2AF06AC700CCA146 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		FB6A04732AD583F900380C0B /* ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		FBDE46592ACD17BA00CAC59B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			children = (
 				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
 				53DA079E2AECA91B007615E5 /* ImagePicker.swift */,
+				53F9112C2AF06AC700CCA146 /* AppUser.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				FB6E83582ADA1AFC004C5F5F /* ProfileView.swift in Sources */,
 				FBFDFE352AC3926500CD57C4 /* TutorNowView.swift in Sources */,
 				53DA07A12AECAEA6007615E5 /* FirebaseManager.swift in Sources */,
+				53F9112D2AF06AC700CCA146 /* AppUser.swift in Sources */,
 				FBFDFE372AC3927800CD57C4 /* ListingsView.swift in Sources */,
 				53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */,
 				FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */,
@@ -419,7 +423,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -434,7 +438,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.manasnagelia.tutor-nova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -450,7 +454,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -466,7 +470,7 @@
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = "";
 				"OTHER_LDFLAGS[arch=*]" = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.n3Productions.MVP-TutorsNova";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.manasnagelia.tutor-nova";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

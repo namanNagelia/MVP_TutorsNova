@@ -5,13 +5,11 @@ struct ContentView: View {
     @State private var selectedTab = 1
     @Environment(\.colorScheme) var colorScheme
     @State private var isProfileView = false
-    @ObservedObject var appUserInstance = appUser()
+    @StateObject var appUser = AppUser()
     @EnvironmentObject var appViewModel: AppViewModel
     
     var body: some View {
         if (appViewModel.isAuthenticated){
-            
-            
             VStack {
                 HStack {
                     Button(action: {}) {
@@ -41,13 +39,13 @@ struct ContentView: View {
                 .frame(height: 30.0)
                 
                 .sheet(isPresented: $isProfileView) {
-                    ProfileView(isAuthenticated: $appViewModel.isAuthenticated, appUserInstance: appUserInstance)
+                    ProfileView(isAuthenticated: $appViewModel.isAuthenticated)
                 }
 
                 
                 // tabs
                 TabView(selection: $selectedTab) {
-                    TutorNowView(appUserInstance: appUserInstance)
+                    TutorNowView()
                         .tabItem {
                             Image(systemName: "graduationcap.fill")
                             Text("Tutoring")
@@ -67,15 +65,14 @@ struct ContentView: View {
                 }
                 .onAppear {
                     selectedTab = 1
-                    appUserInstance.fetchUserData()
+                    appUser.fetchUserData()
                 }
             }
+            .environmentObject(appUser)
         } else {
             NavigationView {
                 AuthView(isAuthenticated: $appViewModel.isAuthenticated)
             }
-            
-            
         }
     }
 }
