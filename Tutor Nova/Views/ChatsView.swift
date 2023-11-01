@@ -1,29 +1,32 @@
 
-import FirebaseAuth
-import SwiftUI
 import Firebase
+import FirebaseAuth
 import FirebaseFirestore
+import SwiftUI
 
 struct ChatsView: View {
-    
     @State var shouldShowLogOutOptions = false
     @EnvironmentObject var appUser: AppUser
     
     private var customNavBar: some View {
         HStack(spacing: 16) {
-            //Fix loading and make it the default, and fix resizing. If, person.fill, else...
-            AsyncImage(url: URL(string: "\(appUser.profileImgString )")){
-                image in
-                image.resizable()
-            } placeholder:{
-                ProgressView()
+            if appUser.profileImgString.isEmpty {
+                Image(systemName: "person.fill")
+                    .font(.system(size: 34, weight: .heavy))
             }
-            .frame(width:50, height:50)
-            .cornerRadius(44)
-            .overlay(RoundedRectangle(cornerRadius: 44)
-                .stroke(Color(.label), lineWidth: 1)
-            )
-
+            else {
+                AsyncImage(url: URL(string: "\(appUser.profileImgString)")) {
+                    image in
+                    image.resizable()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 50, height: 50)
+                .cornerRadius(44)
+                .overlay(RoundedRectangle(cornerRadius: 44)
+                    .stroke(Color(.label), lineWidth: 1)
+                )
+            }
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(appUser.firstName) \(appUser.lastName)")
@@ -37,7 +40,6 @@ struct ChatsView: View {
                         .font(.system(size: 12))
                         .foregroundColor(Color(.lightGray))
                 }
-                
             }
             
             Spacer()
@@ -47,7 +49,6 @@ struct ChatsView: View {
     
     var body: some View {
         NavigationView {
-            
             VStack {
                 customNavBar
                 messagesView
@@ -60,16 +61,15 @@ struct ChatsView: View {
     
     private var messagesView: some View {
         ScrollView {
-            ForEach(0..<10, id: \.self) { num in
+            ForEach(0 ..< 10, id: \.self) { _ in
                 VStack {
                     HStack(spacing: 16) {
                         Image(systemName: "person.fill")
                             .font(.system(size: 32))
                             .padding(8)
                             .overlay(RoundedRectangle(cornerRadius: 44)
-                                        .stroke(Color(.label), lineWidth: 1)
+                                .stroke(Color(.label), lineWidth: 1)
                             )
-                        
                         
                         VStack(alignment: .leading) {
                             Text("Username")
@@ -92,9 +92,7 @@ struct ChatsView: View {
     }
     
     private var newMessageButton: some View {
-        Button {
-            
-        } label: {
+        Button {} label: {
             HStack {
                 Spacer()
                 Text("+ New Message")
@@ -103,16 +101,14 @@ struct ChatsView: View {
             }
             .foregroundColor(.white)
             .padding(.vertical)
-                .background(Color.blue)
-                .cornerRadius(32)
-                .padding(.horizontal)
-                .shadow(radius: 15)
+            .background(Color.blue)
+            .cornerRadius(32)
+            .padding(.horizontal)
+            .shadow(radius: 15)
         }
     }
 }
 
-
 #Preview {
     ChatsView()
 }
-
