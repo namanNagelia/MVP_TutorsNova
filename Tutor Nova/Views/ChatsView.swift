@@ -91,8 +91,11 @@ struct ChatsView: View {
         }
     }
     
+    @State var newMessageScreen = false
     private var newMessageButton: some View {
-        Button {} label: {
+        Button {
+            newMessageScreen.toggle()
+        } label: {
             HStack {
                 Spacer()
                 Text("+ New Message")
@@ -106,9 +109,21 @@ struct ChatsView: View {
             .padding(.horizontal)
             .shadow(radius: 15)
         }
+        .fullScreenCover(isPresented: $newMessageScreen){
+            NewMessageView()
+        }
     }
 }
 
-#Preview {
-    ChatsView()
+struct ChatsView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Create an instance of AppUser
+        let appUser = AppUser()
+        
+        
+        // Return your ChatsView with the AppUser set as an environment object
+        return ChatsView()
+            .environmentObject(appUser)
+    }
 }
+

@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-class AppUser: ObservableObject{
+class AppUser: ObservableObject, Identifiable {
     @Published var userid: String = ""
     @Published var profileImgString: String = ""
     @Published var firstName: String = ""
@@ -16,7 +16,10 @@ class AppUser: ObservableObject{
     @Published var email: String = ""
     @Published var image: UIImage?
     @Published var user: User?
-    
+    var id: String{ userid}
+
+
+
     public func fetchUserData() {
         guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
             print("Could not fetch user data. User is not logged in")
