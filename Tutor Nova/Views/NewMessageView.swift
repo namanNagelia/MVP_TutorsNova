@@ -33,6 +33,8 @@ class createNewMessagesViewModel: ObservableObject {
 }
 
 struct NewMessageView: View {
+    let didSelectNewUser: (AppUser) -> ()
+
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var vm = createNewMessagesViewModel()
     @State private var searchText = ""
@@ -44,8 +46,15 @@ struct NewMessageView: View {
 
                 ScrollView {
                     ForEach(filteredUsers) { user in
-                        UserCardView(user: user)
-                            .padding(.vertical, 16)
+                        Button{
+                            presentationMode.wrappedValue
+                                .dismiss()
+                            didSelectNewUser(user)
+                        }label:{
+                            UserCardView(user: user)
+                                .padding(.vertical, 16)
+                        }
+                        
                     }
                 }
             }
@@ -77,6 +86,7 @@ struct NewMessageView: View {
 }
 
 struct UserCardView: View {
+
     let user: AppUser
 
     var body: some View {
@@ -87,6 +97,7 @@ struct UserCardView: View {
                     .cornerRadius(44)
                     .overlay(RoundedRectangle(cornerRadius: 44)
                         .stroke(Color(.label), lineWidth: 1))
+                    .foregroundColor(.black)
             } else {
                 AsyncImage(url: URL(string: "\(user.profileImgString)")) { image in
                     image.resizable()
@@ -103,11 +114,13 @@ struct UserCardView: View {
             VStack(alignment: .leading) {
                 Text("\(user.firstName) \(user.lastName)")
                     .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(Color(.label))
 
                 Text(user.email)
                     .font(.system(size: 14))
                     .foregroundColor(Color(.secondaryLabel))
             }
+            .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
             Spacer()
         }
     }
@@ -137,6 +150,18 @@ struct SearchBar: View {
     }
 }
 
-#Preview{
-    NewMessageView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            let appUser = AppUser()
+            ChatsView()
+                .preferredColorScheme(.light)
+                .environmentObject(appUser)
+
+            ChatsView()
+                .preferredColorScheme(.dark)
+                .environmentObject(appUser)
+        }
+    }
 }
+

@@ -7,7 +7,7 @@ import SwiftUI
 struct ChatsView: View {
     @State var shouldShowLogOutOptions = false
     @EnvironmentObject var appUser: AppUser
-    
+    @State var shouldNavigatetoChatLog = false
     private var customNavBar: some View {
         HStack(spacing: 16) {
             if appUser.profileImgString.isEmpty {
@@ -52,6 +52,9 @@ struct ChatsView: View {
             VStack {
                 customNavBar
                 messagesView
+                NavigationLink("", isActive: $shouldNavigatetoChatLog) {
+                    chatLogView(appUser: self.chatUser)
+                }
             }
             .overlay(
                 newMessageButton, alignment: .bottom)
@@ -63,26 +66,31 @@ struct ChatsView: View {
         ScrollView {
             ForEach(0 ..< 10, id: \.self) { _ in
                 VStack {
-                    HStack(spacing: 16) {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 32))
-                            .padding(8)
-                            .overlay(RoundedRectangle(cornerRadius: 44)
-                                .stroke(Color(.label), lineWidth: 1)
-                            )
-                        
-                        VStack(alignment: .leading) {
-                            Text("Username")
-                                .font(.system(size: 16, weight: .bold))
-                            Text("Message sent to user")
-                                .font(.system(size: 14))
-                                .foregroundColor(Color(.lightGray))
+                    NavigationLink {
+                        Text("Test")
+                    } label: {
+                        HStack(spacing: 16) {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 32))
+                                .padding(8)
+                                .overlay(RoundedRectangle(cornerRadius: 44)
+                                    .stroke(Color(.label), lineWidth: 1)
+                                )
+                            
+                            VStack(alignment: .leading) {
+                                Text("Username")
+                                    .font(.system(size: 16, weight: .bold))
+                                Text("Message sent to user")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(Color(.lightGray))
+                            }
+                            Spacer()
+                            
+                            Text("22d")
+                                .font(.system(size: 14, weight: .semibold))
                         }
-                        Spacer()
-                        
-                        Text("22d")
-                            .font(.system(size: 14, weight: .semibold))
                     }
+
                     Divider()
                         .padding(.vertical, 8)
                 }.padding(.horizontal)
@@ -109,21 +117,44 @@ struct ChatsView: View {
             .padding(.horizontal)
             .shadow(radius: 15)
         }
-        .fullScreenCover(isPresented: $newMessageScreen){
-            NewMessageView()
+        .fullScreenCover(isPresented: $newMessageScreen) {
+            NewMessageView(didSelectNewUser: { user in
+                print(user.email)
+                self.shouldNavigatetoChatLog.toggle()
+                self.chatUser = user
+
+            })
         }
     }
+
+    @State var chatUser: AppUser?
+    
+    struct chatLogView: View {
+        let appUser: AppUser?
+        
+        var body: some View {
+            NavigationView {
+                ScrollView {
+                    Text("Hi HI HI hI")
+                    Text(appUser?.email ?? "")
+                    Text("Close")
+                }
+                .navigationTitle(appUser?.email ?? "")
+            }
+        }
+    }
+
 }
+
+
 
 struct ChatsView_Previews: PreviewProvider {
     static var previews: some View {
         // Create an instance of AppUser
         let appUser = AppUser()
         
-        
         // Return your ChatsView with the AppUser set as an environment object
         return ChatsView()
             .environmentObject(appUser)
     }
 }
-
