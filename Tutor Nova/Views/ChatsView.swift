@@ -53,7 +53,7 @@ struct ChatsView: View {
                 customNavBar
                 messagesView
                 NavigationLink("", isActive: $shouldNavigatetoChatLog) {
-                    chatLogView(appUser: self.chatUser)
+                    ChatLogView(appUser: self.chatUser)
                 }
             }
             .overlay(
@@ -90,7 +90,7 @@ struct ChatsView: View {
                                 .font(.system(size: 14, weight: .semibold))
                         }
                     }
-
+                    
                     Divider()
                         .padding(.vertical, 8)
                 }.padding(.horizontal)
@@ -122,39 +122,23 @@ struct ChatsView: View {
                 print(user.email)
                 self.shouldNavigatetoChatLog.toggle()
                 self.chatUser = user
-
+                
             })
         }
     }
-
-    @State var chatUser: AppUser?
     
-    struct chatLogView: View {
-        let appUser: AppUser?
-        
-        var body: some View {
-            NavigationView {
-                ScrollView {
-                    Text("Hi HI HI hI")
-                    Text(appUser?.email ?? "")
-                    Text("Close")
-                }
-                .navigationTitle(appUser?.email ?? "")
-            }
+    @State var chatUser: AppUser?
+}
+    
+    
+    
+    struct ChatsView_Previews: PreviewProvider {
+        static var previews: some View {
+            // Create an instance of AppUser
+            let appUser = AppUser()
+            
+            // Return your ChatsView with the AppUser set as an environment object
+            return ChatsView()
+                .environmentObject(appUser)
         }
     }
-
-}
-
-
-
-struct ChatsView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Create an instance of AppUser
-        let appUser = AppUser()
-        
-        // Return your ChatsView with the AppUser set as an environment object
-        return ChatsView()
-            .environmentObject(appUser)
-    }
-}
