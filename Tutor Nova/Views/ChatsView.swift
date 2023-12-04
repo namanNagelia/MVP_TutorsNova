@@ -67,7 +67,8 @@ struct ChatsView: View {
             ForEach(0 ..< 10, id: \.self) { _ in
                 VStack {
                     NavigationLink {
-                        Text("Test")
+                        //May need to change
+                    
                     } label: {
                         HStack(spacing: 16) {
                             Image(systemName: "person.fill")

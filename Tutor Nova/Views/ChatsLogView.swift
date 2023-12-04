@@ -1,31 +1,63 @@
 import SwiftUI
+import Firebase
 
 struct ChatLogView: View {
+    class ChatLogViewModel: ObservableObject {
+        @Published var chatText = ""
+        @Published var errorMessage = ""
+        
+        let appUser: AppUser?
+        
+        init(appUser: AppUser?) {
+            self.appUser = appUser
+        }
+
+        func handleSend(text: String) {
+            chatText = text
+            print(text)
+            guard let fromID = FirebaseManager.shared.auth.currentUser?.uid else {return}
+            
+            guard let toID = appUser?.userid else {return}
+            
+            let document =
+            FirebaseManager.shared.firestore
+                .collection("messages")
+                .document(fromID)
+                .collection(toID)
+                .document()
+            
+            let messageData = ["fromID": fromID, "toID": toID, "text": self.chatText, "timestamp": Timestamp()] as [String : Any]
+            
+            document.setData(messageData) { error in
+                if let error = error{
+                    self.errorMessage = "Failed to save message:  \(error)"
+                }}
+        }
+    }
+
     @Environment(\.presentationMode) var presentationMode
     let appUser: AppUser?
+
+    init(appUser: AppUser?) {
+        self.appUser = appUser
+        self.vm = .init(appUser: appUser)
+    }
+
+    
     @State private var messageText = ""
+    @ObservedObject var vm: ChatLogViewModel
 
     var body: some View {
         NavigationView {
             VStack {
-                // Custom Top Bar
-                HStack {
-                    Text(appUser?.email ?? "")
-                        .font(.headline)
-                        .padding(.trailing, 10)
-                }
-                .padding()
-                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-                .zIndex(1) // Ensure the shadow is above other views
-
                 // Chat Messages
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 10) {
                         ForEach(0..<10) { num in
                             HStack {
-                                    Spacer()
-                                
-                                //Logic to display current messages
+                                Spacer()
+
+                                // Logic to display current messages
                                 Text("Fake Message")
                                     .foregroundColor(.white)
                                     .padding(10)
@@ -65,7 +97,7 @@ struct ChatLogView: View {
                         )
 
                     Button(action: {
-                        // Implement your logic to send a message
+                        vm.handleSend(text: self.messageText)
                     }) {
                         Image(systemName: "arrow.right.circle.fill")
                             .resizable()
@@ -75,7 +107,7 @@ struct ChatLogView: View {
                     .padding()
                 }
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitle(appUser?.email ?? "", displayMode: .inline)
         }
     }
 }
