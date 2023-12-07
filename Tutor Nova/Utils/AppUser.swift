@@ -16,6 +16,7 @@ class AppUser: ObservableObject, Identifiable {
     @Published var email: String = ""
     @Published var image: UIImage?
     @Published var user: User?
+    @Published var courses: UMDCourses = []
     var id: String{ userid}
 
 
@@ -156,6 +157,33 @@ class AppUser: ObservableObject, Identifiable {
             }
             
             print("User information updated successfully")
+        }
+    }
+    
+    public func fetchCourses() {
+        if let url = URL(string: "https://api.umd.io/v1/courses") {
+            URLSession.shared.dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    print("Error fetching courses: \(error)")
+                    return
+                }
+                
+                guard let data = data else {
+                    print("No data received")
+                    return
+                }
+                
+                do {
+                    let decoder = JSONDecoder()
+                    let decodedCourses = try decoder.decode(UMDCourses.self, from: data)
+                    
+                    DispatchQueue.main.async {
+                        self.courses = decodedCourses
+                    }
+                } catch {
+                    print("Error decoding courses data: \(error)")
+                }
+            }.resume()
         }
     }
 

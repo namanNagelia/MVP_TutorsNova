@@ -66,6 +66,7 @@ struct ContentView: View {
                 .onAppear {
                     selectedTab = 1
                     appUser.fetchUserData()
+                    appUser.fetchCourses()
                 }
             }
             .environmentObject(appUser)

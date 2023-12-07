@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		536697F82B1ECBFF0074BAA8 /* UMDCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */; };
 		53986F602AE9E33700A73EC8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F5F2AE9E33700A73EC8 /* FirebaseAnalytics */; };
 		53986F622AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F612AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion */; };
 		53986F642AE9E33700A73EC8 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F632AE9E33700A73EC8 /* FirebaseAnalyticsSwift */; };
@@ -53,6 +54,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMDCourses.swift; sourceTree = "<group>"; };
 		53DA079E2AECA91B007615E5 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		53F9112C2AF06AC700CCA146 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				FBFDFE382AC3928800CD57C4 /* ChatsView.swift */,
 				FB6E83572ADA1AFC004C5F5F /* ProfileView.swift */,
 				FBC7EF8B2B0992480011BBAB /* NewMessageView.swift */,
+				536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
 				FBC7EF8C2B0992480011BBAB /* NewMessageView.swift in Sources */,
+				536697F82B1ECBFF0074BAA8 /* UMDCourses.swift in Sources */,
 				FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */,
 				FBFDFE272AC3913100CD57C4 /* TutorNovaApp.swift in Sources */,
 			);
@@ -431,7 +435,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -462,7 +466,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
