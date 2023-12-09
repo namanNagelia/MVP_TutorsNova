@@ -48,18 +48,29 @@ struct ChatsView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 customNavBar
                 messagesView
-                NavigationLink("", isActive: $shouldNavigatetoChatLog) {
-                    ChatLogView(appUser: self.chatUser)
-                }
+                
+                //NavigationLink("", isActive: $shouldNavigatetoChatLog) {
+                //ChatLogView(appUser: self.chatUser)
+                
+                //}
             }
-            .overlay(
-                newMessageButton, alignment: .bottom)
-            .navigationBarHidden(true)
-        }
+            .overlay(newMessageButton, alignment: .bottom)
+            .navigationDestination(isPresented: $shouldNavigatetoChatLog) {
+                ChatLogView(appUser: self.chatUser)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .principal) {
+                            Text(self.chatUser?.email ?? "")
+                                .font(.headline) // Set the desired font size
+                        }
+                        
+                    }
+            }
+        }.background(Color(.white))
     }
     
     private var messagesView: some View {
