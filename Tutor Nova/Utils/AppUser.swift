@@ -16,7 +16,7 @@ class AppUser: ObservableObject, Identifiable {
     @Published var email: String = ""
     @Published var image: UIImage?
     @Published var user: User?
-    @Published var courses: UMDCourses = []
+    @Published var courses: UMDCoursesList = []
     var id: String{ userid}
 
 
@@ -160,8 +160,16 @@ class AppUser: ObservableObject, Identifiable {
         }
     }
     
-    public func fetchCourses() {
-        if let url = URL(string: "https://api.umd.io/v1/courses") {
+    public func fetchCourses() async throws -> UMDCoursesList {
+        let url = URL(string: "https://api.umd.io/v1/courses/list")!
+
+        let (data, _) = try await URLSession.shared.data(from: url)
+
+        let decoded = try JSONDecoder().decode(UMDCoursesList.self, from: data)
+
+        return decoded
+        /*
+        if let url = URL(string: "https://api.umd.io/v1/courses/list") {
             URLSession.shared.dataTask(with: url) { (data, response, error) in
                 if let error = error {
                     print("Error fetching courses: \(error)")
@@ -185,6 +193,7 @@ class AppUser: ObservableObject, Identifiable {
                 }
             }.resume()
         }
+         */
     }
 
 }

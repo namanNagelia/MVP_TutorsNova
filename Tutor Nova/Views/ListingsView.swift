@@ -14,12 +14,8 @@ struct ListingsView: View {
     @State private var searchText = ""
     @EnvironmentObject var appUser: AppUser
     
-    var filteredCourses: UMDCourses {
-        if searchText.isEmpty {
-            return appUser.courses
-        } else {
-            return appUser.courses.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
+    var filteredCourses: UMDCoursesList {
+        return appUser.courses.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         
     }
     
@@ -41,6 +37,7 @@ struct ListingsView: View {
                 .cornerRadius(10)
                 .padding(.horizontal)
             
+            
             // List of Course Panels
             ScrollView {
                 LazyVStack(spacing: 10) {
@@ -59,7 +56,7 @@ struct ListingsView: View {
 
 struct CoursePanel: View {
     @State private var isExpanded = false
-    let course: UMDCourse
+    let course: UMDCoursesListElement
     
     var body: some View {
         VStack {

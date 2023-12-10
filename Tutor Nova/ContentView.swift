@@ -63,10 +63,20 @@ struct ContentView: View {
                             Text("Chats")
                         }.tag(2)
                 }
-                .onAppear {
+                .task {
                     selectedTab = 1
                     appUser.fetchUserData()
-                    appUser.fetchCourses()
+                    
+                    Task {
+                        do {
+                            let courses = try await appUser.fetchCourses()
+                            
+                            appUser.courses = courses
+                            print(courses)
+                        } catch {
+                            print(error)
+                        }
+                    }
                 }
             }
             .environmentObject(appUser)
