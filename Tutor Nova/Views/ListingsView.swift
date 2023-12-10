@@ -15,7 +15,7 @@ struct ListingsView: View {
     @EnvironmentObject var appUser: AppUser
     
     var filteredCourses: UMDCoursesList {
-        return appUser.courses.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        return appUser.courses.filter { $0.courseID.lowercased().contains(searchText.lowercased()) }
         
     }
     
@@ -66,7 +66,7 @@ struct CoursePanel: View {
                 }
             }) {
                 HStack {
-                    Text(course.name)
+                    Text(course.courseID)
                         .font(.title)
                         .foregroundColor(.primary)
                         .padding(.trailing, 10) // Add padding to the right of the course name
@@ -107,5 +107,5 @@ struct CoursePanel: View {
 }
 
 #Preview {
-    ContentView()
+    ListingsView()
 }
