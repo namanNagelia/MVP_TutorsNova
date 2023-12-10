@@ -135,7 +135,7 @@ struct ChatsView: View {
                 self.shouldNavigatetoChatLog.toggle()
                 self.chatUser = user
                 
-            })
+            }, currentUser: appUser)
         }
     }
     

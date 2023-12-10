@@ -2,6 +2,7 @@ import SwiftUI
 
 class createNewMessagesViewModel: ObservableObject {
     @Published var users = [AppUser]()
+    
 
     init() {
         fetchAllUsers()
@@ -34,6 +35,8 @@ class createNewMessagesViewModel: ObservableObject {
 
 struct NewMessageView: View {
     let didSelectNewUser: (AppUser) -> ()
+    let currentUser: AppUser  // Add this property
+
 
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var vm = createNewMessagesViewModel()
@@ -46,14 +49,17 @@ struct NewMessageView: View {
 
                 ScrollView {
                     ForEach(filteredUsers) { user in
-                        Button{
-                            presentationMode.wrappedValue
-                                .dismiss()
-                            didSelectNewUser(user)
-                        }label:{
-                            UserCardView(user: user)
-                                .padding(.vertical, 16)
+                        if(currentUser.email.lowercased() != user.email.lowercased()){
+                            Button{
+                                presentationMode.wrappedValue
+                                    .dismiss()
+                                didSelectNewUser(user)
+                            }label:{
+                                UserCardView(user: user)
+                                    .padding(.vertical, 16)
+                            }
                         }
+                        
                         
                     }
                 }
@@ -77,9 +83,11 @@ struct NewMessageView: View {
             return vm.users
         } else {
             return vm.users.filter { user in
-                user.email.lowercased().contains(searchText.lowercased()) ||
-                user.firstName.lowercased().contains(searchText.lowercased()) ||
-                user.lastName.lowercased().contains(searchText.lowercased())
+                
+                //If user is the current one dont show, so do if !current user then we do bottom code ijust dont know how to do !currentUser
+                                    (user.email.lowercased().contains(searchText.lowercased()) ||
+                                     user.firstName.lowercased().contains(searchText.lowercased()) ||
+                                     user.lastName.lowercased().contains(searchText.lowercased()))
             }
         }
     }
