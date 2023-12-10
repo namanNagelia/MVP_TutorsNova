@@ -42,7 +42,9 @@ struct ListingsView: View {
             ScrollView {
                 LazyVStack(spacing: 10) {
                     ForEach(filteredCourses) { course in
-                        CoursePanel(course: course)
+                        if String(course.courseID.last!).rangeOfCharacter(from: NSCharacterSet.letters) == nil {
+                            CoursePanel(course: course)
+                        }
                     }
                 }
             }
