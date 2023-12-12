@@ -58,6 +58,7 @@ struct ChatLogView: View {
                             self.chatMessages.append(chatMessageAdder)
                         }
                     }
+                    self.count += 1
                 }
         }
         
@@ -69,11 +70,11 @@ struct ChatLogView: View {
             guard let toID = appUser?.userid else { return }
             
             let document =
-            FirebaseManager.shared.firestore
-                .collection("messages")
-                .document(fromID)
-                .collection(toID)
-                .document()
+                FirebaseManager.shared.firestore
+                    .collection("messages")
+                    .document(fromID)
+                    .collection(toID)
+                    .document()
             
             let messageData = [FirebaseConstants.fromID: fromID, FirebaseConstants.toID: toID, FirebaseConstants.text: chatText, "timestamp": Timestamp()] as [String: Any]
             
@@ -82,13 +83,14 @@ struct ChatLogView: View {
                     self.errorMessage = "Failed to save message:  \(error)"
                 }
                 print("sender Saved")
+                self.count += 1
             }
             let recipientDocument =
-            FirebaseManager.shared.firestore
-                .collection("messages")
-                .document(toID)
-                .collection(fromID)
-                .document()
+                FirebaseManager.shared.firestore
+                    .collection("messages")
+                    .document(toID)
+                    .collection(fromID)
+                    .document()
             recipientDocument.setData(messageData) { error in
                 if let error = error {
                     self.errorMessage = "Failed to save message:  \(error)"
@@ -96,6 +98,8 @@ struct ChatLogView: View {
                 print("Recipient saved")
             }
         }
+        
+        @Published var count = 0
     }
     
     @Environment(\.presentationMode) var presentationMode
@@ -116,35 +120,23 @@ struct ChatLogView: View {
                 // Chat Messages
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 10) {
-                        ForEach(vm.chatMessages) { message in
-                            VStack{
-                                if message.fromID == FirebaseManager.shared.auth.currentUser?.uid{
-                                    HStack {
-                                        Spacer()
-                                        Text(message.text)
-                                            .foregroundColor(.white)
-                                            .padding(10)
-                                            .background(Color.blue)
-                                            .cornerRadius(15)
-                                            .frame(maxWidth: .infinity, alignment: message.fromID == FirebaseManager.shared.auth.currentUser?.uid ? .trailing : .leading)
-                                    }
-                                    .padding(.horizontal, 16)
-                                }else{
-                                    HStack {
-                                        
-                                        Text(message.text)
-                                            .foregroundColor(.white)
-                                            .padding(10)
-                                            .background(Color.gray)
-                                            .cornerRadius(15)
-                                            .frame(maxWidth: .infinity, alignment: message.fromID == FirebaseManager.shared.auth.currentUser?.uid ? .trailing : .leading)
-                                        Spacer()
-
-                                    }
-                                    .padding(.horizontal, 16)
+                        ScrollViewReader { scrollViewProxy in
+                            VStack {
+                                ForEach(vm.chatMessages) { message in
+                                    MessageView(message: message)
                                 }
+                                
+                                HStack { Spacer() }
+                                    .id("Empty")
                             }
-                            
+                            .onReceive(vm.$count) { _ in
+                                withAnimation(.easeOut(duration: 0.5)){
+                                    scrollViewProxy.scrollTo("Empty", anchor:
+                                        .bottom)
+                                }
+                                
+                                
+                            }
                         }
                     }
                     .padding(.top, 10)
@@ -189,10 +181,40 @@ struct ChatLogView: View {
                     }
                     .padding()
                 }
-                
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarItems(leading: EmptyView(), trailing: EmptyView())
                 .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 5)
+            }
+        }
+    }
+}
+
+struct MessageView: View {
+    let message: ChatMessage
+    var body: some View {
+        VStack {
+            if message.fromID == FirebaseManager.shared.auth.currentUser?.uid {
+                HStack {
+                    Spacer()
+                    Text(message.text)
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                        .frame(maxWidth: .infinity, alignment: message.fromID == FirebaseManager.shared.auth.currentUser?.uid ? .trailing : .leading)
+                }
+                .padding(.horizontal, 16)
+            } else {
+                HStack {
+                    Text(message.text)
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.gray)
+                        .cornerRadius(15)
+                        .frame(maxWidth: .infinity, alignment: message.fromID == FirebaseManager.shared.auth.currentUser?.uid ? .trailing : .leading)
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
             }
         }
     }
