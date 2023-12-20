@@ -7,6 +7,9 @@ struct FirebaseConstants {
     static let fromID = "fromID"
     static let toID = "toID"
     static let text = "text"
+    static let timestamp = "timestamp"
+    static let pfpURL = "pfpURL"
+    static let email = "email"
 }
 
 struct ChatMessage: Identifiable {
@@ -63,6 +66,7 @@ struct ChatLogView: View {
         }
         
         func handleSend(text: String) {
+
             chatText = text
             print(text)
             guard let fromID = FirebaseManager.shared.auth.currentUser?.uid else { return }
@@ -82,8 +86,12 @@ struct ChatLogView: View {
                 if let error = error {
                     self.errorMessage = "Failed to save message:  \(error)"
                 }
+                
+                self.persistRecentMessage()
                 print("sender Saved")
                 self.count += 1
+                self.chatText = ""
+                
             }
             let recipientDocument =
                 FirebaseManager.shared.firestore
@@ -97,6 +105,38 @@ struct ChatLogView: View {
                 }
                 print("Recipient saved")
             }
+        }
+        
+        private func persistRecentMessage(){
+            
+            guard let uid = FirebaseManager.shared.auth.currentUser?.uid else{
+                return
+            }
+            guard let toID = self.appUser?.userid else{return}
+            
+            let document = FirebaseManager.shared.firestore.collection("recent_messages")
+                .document(uid)
+                .collection("messages")
+                .document(toID)
+            
+            var data: [String: Any] = [
+                    FirebaseConstants.timestamp: Timestamp(),
+                    FirebaseConstants.text: self.chatText,
+                    FirebaseConstants.fromID: uid,
+                    FirebaseConstants.toID: toID,
+                    FirebaseConstants.pfpURL: appUser?.profileImgString ?? "",
+                    FirebaseConstants.email: appUser?.email ?? ""
+                ]
+                
+                // Check if chatText is not empty before adding it to the data dictionary
+                
+            document.setData(data) { error in
+                if let error = error{
+                    print("Failed to save \(error)")
+                    return
+                }}
+            
+            
         }
         
         @Published var count = 0
