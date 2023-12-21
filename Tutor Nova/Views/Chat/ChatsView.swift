@@ -148,6 +148,28 @@ struct ChatsView: View {
             }
         }.background(Color(.white))
     }
+    private func timeAgoString(from timestamp: Timestamp) -> String {
+        let calendar = Calendar.current
+        let now = Date()
+        let messageDate = timestamp.dateValue()
+
+        if calendar.isDateInToday(messageDate) {
+            let components = calendar.dateComponents([.minute], from: messageDate, to: now)
+            if let minutes = components.minute, minutes < 60 {
+                return "\(minutes) min ago"
+            } else {
+                return "Today"
+            }
+        } else if calendar.isDateInYesterday(messageDate) {
+            return "Yesterday"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM d, yyyy"
+            return formatter.string(from: messageDate)
+        }
+    }
+
+
     
     private var messagesView: some View {
         ScrollView {
@@ -156,12 +178,31 @@ struct ChatsView: View {
                     NavigationLink {} label: {
                         HStack(spacing: 16) {
                             // fix this
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 32))
-                                .padding(8)
-                                .overlay(RoundedRectangle(cornerRadius: 44)
-                                    .stroke(Color(.label), lineWidth: 1)
-                                )
+                            
+                            if recentMessage.profileImageURL.isEmpty {
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 32))
+                                    .padding(8)
+                                    .overlay(RoundedRectangle(cornerRadius: 44)
+                                                   .stroke(Color.black, lineWidth: 1))
+                                               .accentColor(.black) // Set the accent color for the image
+
+                            }
+                            else {
+                                AsyncImage(url: URL(string: "\(recentMessage.profileImageURL)")) {
+                                    image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                
+                                //resize to same as top
+                                .frame(width: 50, height: 50) // Match the size dynamically
+                                        .cornerRadius(44)
+                                        .overlay(RoundedRectangle(cornerRadius: 44)
+                                            .stroke(Color(.label), lineWidth: 1))
+                            }
+
                             
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(recentMessage.email)
@@ -174,8 +215,9 @@ struct ChatsView: View {
                             }
                             Spacer()
                             
-                            Text("22d")
-                                .font(.system(size: 14, weight: .semibold))
+                            Text(timeAgoString(from: recentMessage.timeStamp))
+                                                        .font(.system(size: 14, weight: .semibold))
+
                         }
                     }
                     
