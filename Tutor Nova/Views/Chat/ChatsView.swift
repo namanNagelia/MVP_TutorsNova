@@ -4,10 +4,87 @@ import FirebaseAuth
 import FirebaseFirestore
 import SwiftUI
 
+struct recentMessage: Identifiable {
+    var id: String { documentID }
+    let documentID: String
+    let text, fromID, toID, email, profileImageURL: String
+    let timeStamp: Firebase.Timestamp
+    
+    init(documentID: String, data: [String: Any]) {
+        self.documentID = documentID
+        self.text = data["text"] as? String ?? ""
+        self.email = data["email"] as? String ?? ""
+        self.toID = data["toID"] as? String ?? ""
+        self.fromID = data["fromID"] as? String ?? ""
+        self.profileImageURL = data["pfpURL"] as? String ?? ""
+        self.timeStamp = data["timestamp"] as? Timestamp ?? Timestamp(date: Date())
+    }
+}
+
+class messagesViewModel: ObservableObject {
+    @Published var appUser: AppUser?
+    @Published var recentMessages = [recentMessage]()
+    
+    init() {
+        fetchUser()
+        fetchRecentMessages()
+    }
+    
+    func fetchUser() {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
+            print("Could not find UID")
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("Could not get document: \(error)")
+                return
+            }
+            
+            guard let data = snapshot?.data() else {
+                print("Could not retrieve data")
+                return
+            }
+            // self.appUser = .init(data: data)
+        }
+    }
+    
+    func fetchRecentMessages() {
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else { return }
+            
+        FirebaseManager.shared.firestore
+            .collection("recent_messages")
+            .document(uid)
+            .collection("messages")
+            .order(by: "timestamp")
+            .addSnapshotListener { querySnapshot, error in
+                if error != nil {
+                    print("failed")
+                    return
+                }
+                    
+                querySnapshot?.documentChanges.forEach { change in
+                    let docID = change.document.documentID
+                        
+                    if let index = self.recentMessages.firstIndex(where: { rm in
+                        rm.documentID == docID
+                    }) {
+                        self.recentMessages.remove(at: index)
+                    }
+                        
+                    self.recentMessages.insert(.init(documentID: docID, data: change.document.data()), at: 0)
+                }
+            }
+    }
+}
+
 struct ChatsView: View {
     @State var shouldShowLogOutOptions = false
     @EnvironmentObject var appUser: AppUser
     @State var shouldNavigatetoChatLog = false
+    @ObservedObject var vm = messagesViewModel()
+
     private var customNavBar: some View {
         HStack(spacing: 16) {
             if appUser.profileImgString.isEmpty {
@@ -53,10 +130,10 @@ struct ChatsView: View {
                 customNavBar
                 messagesView
                 
-                //NavigationLink("", isActive: $shouldNavigatetoChatLog) {
-                //ChatLogView(appUser: self.chatUser)
+                // NavigationLink("", isActive: $shouldNavigatetoChatLog) {
+                // ChatLogView(appUser: self.chatUser)
                 
-                //}
+                // }
             }
             .overlay(newMessageButton, alignment: .bottom)
             .navigationDestination(isPresented: $shouldNavigatetoChatLog) {
@@ -67,7 +144,6 @@ struct ChatsView: View {
                             Text(self.chatUser?.email ?? "")
                                 .font(.headline) // Set the desired font size
                         }
-                        
                     }
             }
         }.background(Color(.white))
@@ -75,13 +151,11 @@ struct ChatsView: View {
     
     private var messagesView: some View {
         ScrollView {
-            ForEach(0 ..< 10, id: \.self) { _ in
+            ForEach(vm.recentMessages) { recentMessage in
                 VStack {
-                    NavigationLink {
-                        //May need to change
-                    
-                    } label: {
+                    NavigationLink {} label: {
                         HStack(spacing: 16) {
+                            // fix this
                             Image(systemName: "person.fill")
                                 .font(.system(size: 32))
                                 .padding(8)
@@ -89,12 +163,14 @@ struct ChatsView: View {
                                     .stroke(Color(.label), lineWidth: 1)
                                 )
                             
-                            VStack(alignment: .leading) {
-                                Text("Username")
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(recentMessage.email)
                                     .font(.system(size: 16, weight: .bold))
-                                Text("Message sent to user")
+                                    .foregroundColor(Color(.label))
+                                Text(recentMessage.text)
                                     .font(.system(size: 14))
                                     .foregroundColor(Color(.lightGray))
+                                    .multilineTextAlignment(/*@START_MENU_TOKEN@*/ .leading/*@END_MENU_TOKEN@*/)
                             }
                             Spacer()
                             
@@ -142,15 +218,13 @@ struct ChatsView: View {
     @State var chatUser: AppUser?
 }
     
-    
-    
-    struct ChatsView_Previews: PreviewProvider {
-        static var previews: some View {
-            // Create an instance of AppUser
-            let appUser = AppUser()
+struct ChatsView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Create an instance of AppUser
+        let appUser = AppUser()
             
-            // Return your ChatsView with the AppUser set as an environment object
-            return ChatsView()
-                .environmentObject(appUser)
-        }
+        // Return your ChatsView with the AppUser set as an environment object
+        return ChatsView()
+            .environmentObject(appUser)
     }
+}

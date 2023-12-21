@@ -17,6 +17,7 @@ class AppUser: ObservableObject, Identifiable {
     @Published var image: UIImage?
     @Published var user: User?
     var id: String{ userid}
+    
 
 
 
