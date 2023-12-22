@@ -9,6 +9,7 @@ struct recentMessage: Identifiable {
     let documentID: String
     let text, fromID, toID, email, profileImageURL: String
     let timeStamp: Firebase.Timestamp
+    let firstName, lastName: String
     
     init(documentID: String, data: [String: Any]) {
         self.documentID = documentID
@@ -18,6 +19,8 @@ struct recentMessage: Identifiable {
         self.fromID = data["fromID"] as? String ?? ""
         self.profileImageURL = data["pfpURL"] as? String ?? ""
         self.timeStamp = data["timestamp"] as? Timestamp ?? Timestamp(date: Date())
+        self.firstName = data["firstName"] as? String ?? ""
+        self.lastName = data["lastName"] as? String ?? ""
     }
 }
 
@@ -130,10 +133,7 @@ struct ChatsView: View {
                 customNavBar
                 messagesView
                 
-                // NavigationLink("", isActive: $shouldNavigatetoChatLog) {
-                // ChatLogView(appUser: self.chatUser)
-                
-                // }
+              
             }
             .overlay(newMessageButton, alignment: .bottom)
             .navigationDestination(isPresented: $shouldNavigatetoChatLog) {
@@ -175,7 +175,6 @@ struct ChatsView: View {
         ScrollView {
             ForEach(vm.recentMessages) { recentMessage in
                 VStack {
-                    NavigationLink {} label: {
                         HStack(spacing: 16) {
                             // fix this
                             
@@ -219,7 +218,18 @@ struct ChatsView: View {
                                                         .font(.system(size: 14, weight: .semibold))
 
                         }
-                    }
+                        .onTapGesture {
+                            let user = AppUser()
+                            user.userid = recentMessage.toID
+                            user.profileImgString = recentMessage.profileImageURL
+                            user.firstName = recentMessage.firstName
+                            user.lastName = recentMessage.lastName
+                            user.email = recentMessage.email
+
+                            self.chatUser = user
+                            self.shouldNavigatetoChatLog.toggle()
+                            print("Navigation Toggled")
+                        }
                     
                     Divider()
                         .padding(.vertical, 8)

@@ -2,7 +2,10 @@ import Firebase
 import SwiftUI
 
 // Fix UI
-// Add email/Name later
+// Fix default PFP to show in new UI
+// Fix default in main screen and new message screen
+// Fix email color (probably in chat log view)
+// MAIN PRIORITY: If someone sends you a message, the message shows up on their end too, and see chatlog when you tap a card
 struct FirebaseConstants {
     static let fromID = "fromID"
     static let toID = "toID"
@@ -10,6 +13,8 @@ struct FirebaseConstants {
     static let timestamp = "timestamp"
     static let pfpURL = "pfpURL"
     static let email = "email"
+    static let firstName = "firstName"
+    static let lastName = "lastName"
 }
 
 struct ChatMessage: Identifiable {
@@ -66,7 +71,6 @@ struct ChatLogView: View {
         }
         
         func handleSend(text: String) {
-
             chatText = text
             print(text)
             guard let fromID = FirebaseManager.shared.auth.currentUser?.uid else { return }
@@ -91,7 +95,6 @@ struct ChatLogView: View {
                 print("sender Saved")
                 self.count += 1
                 self.chatText = ""
-                
             }
             let recipientDocument =
                 FirebaseManager.shared.firestore
@@ -107,35 +110,41 @@ struct ChatLogView: View {
             }
         }
         
-        private func persistRecentMessage(){
+        private func persistRecentMessage() {
+            //1, If there is no conversation, the recipient will not have a document. We need to add KMP
             
-            guard let uid = FirebaseManager.shared.auth.currentUser?.uid else{
+            guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
                 return
             }
-            guard let toID = self.appUser?.userid else{return}
+            guard let toID = appUser?.userid else { return }
             
-            let document = FirebaseManager.shared.firestore.collection("recent_messages")
+            let document_sender = FirebaseManager.shared.firestore.collection("recent_messages")
                 .document(uid)
                 .collection("messages")
                 .document(toID)
             
+            let textMessage = chatText
+            
             var data: [String: Any] = [
-                    FirebaseConstants.timestamp: Timestamp(),
-                    FirebaseConstants.text: self.chatText,
-                    FirebaseConstants.fromID: uid,
-                    FirebaseConstants.toID: toID,
-                    FirebaseConstants.pfpURL: appUser?.profileImgString ?? "",
-                    FirebaseConstants.email: appUser?.email ?? ""
-                ]
-                
-                // Check if chatText is not empty before adding it to the data dictionary
-                
-            document.setData(data) { error in
-                if let error = error{
+                FirebaseConstants.timestamp: Timestamp(),
+                FirebaseConstants.text: chatText,
+                FirebaseConstants.fromID: uid,
+                FirebaseConstants.toID: toID,
+                FirebaseConstants.pfpURL: appUser?.profileImgString ?? "",
+                FirebaseConstants.email: appUser?.email ?? "",
+                FirebaseConstants.firstName: appUser?.firstName ?? "",
+                FirebaseConstants.lastName: appUser?.lastName ?? ""
+            ]
+            
+            // Check if chatText is not empty before adding it to the data dictionary
+            
+            document_sender.setData(data) { error in
+                if let error = error {
                     print("Failed to save \(error)")
                     return
-                }}
-            
+                }
+            }
+
             
         }
         
@@ -170,12 +179,10 @@ struct ChatLogView: View {
                                     .id("Empty")
                             }
                             .onReceive(vm.$count) { _ in
-                                withAnimation(.easeOut(duration: 0.5)){
+                                withAnimation(.easeOut(duration: 0.5)) {
                                     scrollViewProxy.scrollTo("Empty", anchor:
                                         .bottom)
                                 }
-                                
-                                
                             }
                         }
                     }
