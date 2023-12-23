@@ -111,7 +111,7 @@ struct ChatLogView: View {
         }
         
         private func persistRecentMessage() {
-            //1, If there is no conversation, the recipient will not have a document. We need to add KMP
+            // 1, If there is no conversation, the recipient will not have a document. We need to add KMP
             
             guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {
                 return
@@ -122,6 +122,12 @@ struct ChatLogView: View {
                 .document(uid)
                 .collection("messages")
                 .document(toID)
+            
+            
+            let document_recipient = FirebaseManager.shared.firestore.collection("recent_messages")
+                .document(toID)
+                .collection("messages")
+                .document(uid)
             
             let textMessage = chatText
             
@@ -136,16 +142,49 @@ struct ChatLogView: View {
                 FirebaseConstants.lastName: appUser?.lastName ?? ""
             ]
             
-            // Check if chatText is not empty before adding it to the data dictionary
+            print("User one info \(data)")
             
+            // Check if chatText is not empty before adding it to the data dictionary
+            // swap UID and TO ID, keep same text, and have current user ProfileImgstring, email, fisrt name and lastname in a new document for the recipient
+            //Receipient part
+            guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {return}
+            FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+                if let error = error
+                {
+                    print("Failed to fetch user data:", error)
+                    return
+                }
+                
+                guard let document = snapshot, 
+                    let data = document.data() else {
+                    print("User data not found")
+                    return
+                }
+                
+                let profileImgString = data["profileImageUrl"] as? String ?? ""
+                let email = data["email"] as? String ?? ""
+                let firstName = data["firstName"] as? String ?? ""
+                let lastName = data["lastName"] as? String ?? ""
+                
+                var data_recipient: [String: Any] = [
+                FirebaseConstants.timestamp: Timestamp(),
+                FirebaseConstants.text: textMessage,
+                FirebaseConstants.fromID: toID,
+                FirebaseConstants.toID: uid,
+                FirebaseConstants.pfpURL: profileImgString ,
+                FirebaseConstants.email: email ,
+                FirebaseConstants.firstName: firstName ,
+                FirebaseConstants.lastName: lastName]
+                
+                print("recipient \(data_recipient)")
+            }
+
             document_sender.setData(data) { error in
                 if let error = error {
                     print("Failed to save \(error)")
                     return
                 }
             }
-
-            
         }
         
         @Published var count = 0
