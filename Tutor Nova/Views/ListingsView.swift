@@ -1,31 +1,33 @@
 import SwiftUI
 
-struct Course: Identifiable {
-    let id = UUID()
+struct Course {
+    let course_id: String
+    let semester: String
     let name: String
-    var isExpanded = false
-    var tutors: [String]
+    let dept_id: String
+    let department: String
+    let credits: String
+    let description: String
 }
 
 struct ListingsView: View {
     @State private var searchText = ""
-    @State private var courses: [Course] = [
-        Course(name: "BMGT110", tutors: ["Tutor1", "Tutor2", "Tutor3"]),
-        Course(name: "MATH140", tutors: ["Tutor4", "Tutor5"]),
-        Course(name: "MATH120", tutors: ["Tutor6"]),
-        Course(name: "MATH340", tutors: ["Tutor7", "Tutor8"]),
-        Course(name: "CMSC132", tutors: ["Tutor9", "Tutor10"]),
-        // Connect to UMD and get all courses
-    ]
-
-    var filteredCourses: [Course] {
-        if searchText.isEmpty {
-            return courses
-        } else {
-            return courses.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
+    @EnvironmentObject var appUser: AppUser
+    
+    var filteredCourses: UMDCoursesList {
+        return appUser.courses.filter { $0.courseID.lowercased().contains(searchText.lowercased()) }
+        
     }
-
+    
+    func fetchDataFromAPI() {
+        
+    }
+    
+    func fetchCourses() {
+        
+    }
+    
+    
     var body: some View {
         VStack {
             // Search Bar
@@ -34,17 +36,20 @@ struct ListingsView: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal)
-
+            
+            
             // List of Course Panels
             ScrollView {
                 LazyVStack(spacing: 10) {
                     ForEach(filteredCourses) { course in
-                        CoursePanel(course: course)
+                        if String(course.courseID.last!).rangeOfCharacter(from: NSCharacterSet.letters) == nil {
+                            CoursePanel(course: course)
+                        }
                     }
                 }
             }
             .padding(.horizontal)
-
+            
             Spacer()
         }
         .navigationBarTitle("Course Listings", displayMode: .inline)
@@ -53,8 +58,8 @@ struct ListingsView: View {
 
 struct CoursePanel: View {
     @State private var isExpanded = false
-    let course: Course
-
+    let course: UMDCoursesListElement
+    
     var body: some View {
         VStack {
             Button(action: {
@@ -63,42 +68,46 @@ struct CoursePanel: View {
                 }
             }) {
                 HStack {
-                    Text(course.name)
+                    Text(course.courseID)
                         .font(.title)
                         .foregroundColor(.primary)
                         .padding(.trailing, 10) // Add padding to the right of the course name
-
+                    
                     Spacer()
-
+                    
                     Image(systemName: isExpanded ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
                         .font(.system(size: 20)) // Reduce the size of the arrow
                         .foregroundColor(.white)
                 }
                 .padding(10) // Add padding around the button
             }
-
+            
             if isExpanded {
-                ForEach(course.tutors, id: \.self) { tutor in
-                    HStack {
-                        Text("Tutor: \(tutor)")
-                            .padding(.leading, 10.0)
-                        // Add action later
-                        Spacer()
-                        Button(action: {}) {
-                            Image(systemName: "person.circle.fill").foregroundColor(.gray)
-                        }
-                        Button(action: {}) {
-                            Image(systemName: "message.fill").foregroundColor(.gray)
-                        }
-                    }
-                }
+                /*
+                 ForEach(course.tutors, id: \.self) { tutor in
+                 HStack {
+                 Text("Tutor: \(tutor)")
+                 .padding(.leading, 10.0)
+                 // Add action later
+                 Spacer()
+                 Button(action: {}) {
+                 Image(systemName: "person.circle.fill").foregroundColor(.gray)
+                 }
+                 Button(action: {}) {
+                 Image(systemName: "message.fill").foregroundColor(.gray)
+                 }
+                 }
+                 }
+                 */
             }
         }.background(Color(.systemGray6))
             .cornerRadius(15) // Increase the corner radius for a more rounded look
             .padding(10)
     }
+    
+    
 }
 
 #Preview {
-    ContentView()
+    ListingsView()
 }

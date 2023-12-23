@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		536697F82B1ECBFF0074BAA8 /* UMDCourses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */; };
 		53986F602AE9E33700A73EC8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F5F2AE9E33700A73EC8 /* FirebaseAnalytics */; };
 		53986F622AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F612AE9E33700A73EC8 /* FirebaseAnalyticsOnDeviceConversion */; };
 		53986F642AE9E33700A73EC8 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F632AE9E33700A73EC8 /* FirebaseAnalyticsSwift */; };
@@ -34,6 +35,7 @@
 		53986F902AE9E33700A73EC8 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F8F2AE9E33700A73EC8 /* FirebaseRemoteConfigSwift */; };
 		53986F922AE9E33700A73EC8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F912AE9E33700A73EC8 /* FirebaseStorage */; };
 		53986F942AE9E33700A73EC8 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 53986F932AE9E33700A73EC8 /* FirebaseStorageCombine-Community */; };
+		53AC7F672B2563DF00F86965 /* UMDCoursesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AC7F662B2563DF00F86965 /* UMDCoursesList.swift */; };
 		53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA079E2AECA91B007615E5 /* ImagePicker.swift */; };
 		53DA07A12AECAEA6007615E5 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */; };
 		53F9112D2AF06AC700CCA146 /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53F9112C2AF06AC700CCA146 /* AppUser.swift */; };
@@ -53,6 +55,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMDCourses.swift; sourceTree = "<group>"; };
+		53AC7F662B2563DF00F86965 /* UMDCoursesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UMDCoursesList.swift; sourceTree = "<group>"; };
 		53DA079E2AECA91B007615E5 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		53F9112C2AF06AC700CCA146 /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
@@ -124,9 +128,11 @@
 		FB7BD6A52AECC27B00D88AC0 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				536697F72B1ECBFF0074BAA8 /* UMDCourses.swift */,
 				53DA07A02AECAEA6007615E5 /* FirebaseManager.swift */,
 				53DA079E2AECA91B007615E5 /* ImagePicker.swift */,
 				53F9112C2AF06AC700CCA146 /* AppUser.swift */,
+				53AC7F662B2563DF00F86965 /* UMDCoursesList.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -300,9 +306,11 @@
 				FBBCEEBE2B0ECE7100C0AC23 /* ChatsLogView.swift in Sources */,
 				53DA079F2AECA91B007615E5 /* ImagePicker.swift in Sources */,
 				FB6A04742AD583F900380C0B /* ResetPassword.swift in Sources */,
+				53AC7F672B2563DF00F86965 /* UMDCoursesList.swift in Sources */,
 				FBE880B02ACC9F8C00DD801E /* AuthView.swift in Sources */,
 				FBFDFE392AC3928800CD57C4 /* ChatsView.swift in Sources */,
 				FBC7EF8C2B0992480011BBAB /* NewMessageView.swift in Sources */,
+				536697F82B1ECBFF0074BAA8 /* UMDCourses.swift in Sources */,
 				FBFDFE292AC3913100CD57C4 /* ContentView.swift in Sources */,
 				FBFDFE272AC3913100CD57C4 /* TutorNovaApp.swift in Sources */,
 			);
@@ -439,7 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -470,7 +478,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tutor Nova/Preview Content\"";
-				DEVELOPMENT_TEAM = DR8M2Z7LQW;
+				DEVELOPMENT_TEAM = 5M43Q3TUJ5;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_TESTABILITY = YES;
 				GENERATE_INFOPLIST_FILE = YES;
