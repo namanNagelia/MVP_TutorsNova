@@ -177,6 +177,14 @@ struct ChatLogView: View {
                 FirebaseConstants.lastName: lastName]
                 
                 print("recipient \(data_recipient)")
+                
+                document_recipient.setData(data_recipient) { error in
+                    if let error = error {
+                        print("Failed to save \(error)")
+                        return
+                    }
+                }
+
             }
 
             document_sender.setData(data) { error in
